@@ -7,13 +7,16 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.JTabbedPane;
 
-
+/**
+ * @Since 2015/05/01
+ */
 public class Mainframe extends JFrame {
 
 	private JPanel contentPane;
 	private MemberPanel memberPanel;
 	private CouponPanel couponPanel;
 	private ProductPanel productPanel;
+	
 	/**
 	 * Launch the application.
 	 */
