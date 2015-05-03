@@ -7,14 +7,14 @@ import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
 
-public class ProductPanel extends JPanel {
+public class ItemPanel extends JPanel {
 
 	private JTable table;
 	
 	/**
 	 * Create the panel.
 	 */
-	public ProductPanel() {
+	public ItemPanel() {
 		setLayout(null);
 
 		// Ä®·³ Á¦¸ñ
