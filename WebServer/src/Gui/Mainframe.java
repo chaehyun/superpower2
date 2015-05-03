@@ -21,11 +21,13 @@ import Communication.ServerThread;
  */
 public class Mainframe extends JFrame {
 
-	private JPanel contentPane; 		// 디폴트로 있음
+	private JPanel contentPane; // 디폴트로 있음
 
-	private MemberPanel memberPanel; 	// 회원 패널
-	private CouponPanel couponPanel; 	// 쿠폰 패널
-	private ItemPanel itemPanel;		// 상품 패널
+	private MemberPanel memberPanel; 		// 회원 패널
+	private CouponPanel couponPanel;	 	// 쿠폰 패널
+	private ItemPanel itemPanel;			// 상품 패널
+	private OwnershipPanel ownershipPanel;	// 소유 패널
+	private PurchasePanel purchasePanel;	// 구매 패널
 	
 	private ServerThread serverThread;	// 서버 클래스
 
@@ -95,6 +97,14 @@ public class Mainframe extends JFrame {
 		// 상품 패널 설정
 		itemPanel = new ItemPanel();
 		tabbedPane.addTab("상품", itemPanel);
+		
+		// 소유 패널 설정
+		ownershipPanel = new OwnershipPanel();
+		tabbedPane.addTab("소유", ownershipPanel);
+		
+		// 구매 패널 설정
+		purchasePanel = new PurchasePanel();
+		tabbedPane.addTab("구매", purchasePanel);
 		
 		// 서버 시작
 		this.serverThread = new ServerThread();
