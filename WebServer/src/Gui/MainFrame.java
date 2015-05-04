@@ -3,6 +3,7 @@ package Gui;
 import java.awt.EventQueue;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.sql.SQLException;
 
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
@@ -11,15 +12,16 @@ import javax.swing.JTabbedPane;
 import javax.swing.border.EmptyBorder;
 
 import Communication.ServerThread;
+import Database.DbConnector;
 
 /**
  * 메인프레임 클래스. 각 기능별 패널들을 담는 큰 틀.
  * 
  * @author Minji, Seongjun
  * @since 2015/5/1
- * @version 2015/5/1
+ * @version 2015/5/4
  */
-public class Mainframe extends JFrame {
+public class MainFrame extends JFrame {
 
 	private JPanel contentPane; // 디폴트로 있음
 
@@ -42,7 +44,7 @@ public class Mainframe extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					Mainframe frame = new Mainframe();
+					MainFrame frame = new MainFrame();
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -54,7 +56,7 @@ public class Mainframe extends JFrame {
 	/**
 	 * 생성자. 메인함수 수행시 호출됨.
 	 */
-	public Mainframe() {
+	public MainFrame() {
 
 		// 메인 프레임의 Swing 요소 설정
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
@@ -77,7 +79,7 @@ public class Mainframe extends JFrame {
 				
 				// yes 이면 프로그램 종료
 				if(res == 0)
-					CloseForm();
+					closeForm();
 			}
 		});
 
@@ -109,19 +111,32 @@ public class Mainframe extends JFrame {
 		// 서버 시작
 		this.serverThread = new ServerThread();
 		this.serverThread.startServer();
+		
+		// 디비 연결
+		DbConnector.getInstance();
 	}
 
 	/**
 	 * 프로그램 종료전 서버 스레드 정리부터 하고 종료함.
 	 */
 	@SuppressWarnings("deprecation")
-	public void CloseForm()
+	public void closeForm()
 	{
-		if(this.serverThread.isRunning()) {
-			this.serverThread.stop();
+		try {
+			// 서버 종료
+			if(this.serverThread.isRunning()) {
+				this.serverThread.stop();
+			}
+			this.serverThread.stopServer();
+			
+			// 디비 종료
+			DbConnector.getInstance().getConnection().close();
+			
+			// 프로그램 종료
+			System.exit(0);
+			
+		} catch(SQLException e) {
+			System.out.println("MainFrame.closeForm()에서 예외 발생 : " + e.getMessage());
 		}
-		
-		this.serverThread.stopServer();
-		System.exit(0);
 	}
 }
