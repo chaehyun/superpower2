@@ -4,8 +4,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.util.ArrayList;
-import java.util.List;
+import java.sql.SQLException;
 import java.util.Vector;
 
 import javax.swing.JButton;
@@ -13,14 +12,21 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.SwingConstants;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
+import javax.swing.table.TableRowSorter;
+
+import Database.GetAllMembers;
+import Elements.Member;
 
 public class MemberPanel extends JPanel {
 
 	private JTable table;
-	private Vector<Vector> rowDatas;
+	private Vector<Vector<String>> rowDatas;
 
 	/**
 	 * 생성자. Swing 컴포넌트 및 테이블 요소 초기화
@@ -80,7 +86,7 @@ public class MemberPanel extends JPanel {
 		columnName.add("입장수");
 
 		// 행 데이터
-		rowDatas = new Vector<Vector>();
+		rowDatas = new Vector<Vector<String>>();
 
 		// 테이블 모델
 		DefaultTableModel tableModel = new DefaultTableModel(rowDatas,
@@ -117,24 +123,15 @@ public class MemberPanel extends JPanel {
 			}
 		});
 		scrollPane.setViewportView(table);
-
-		// dummy
-		Vector<String> dumm = new Vector<String>();
-		dumm.add("annie0731");
-		dumm.add("한민지");
-		dumm.add("F");
-		dumm.add("23");
-		dumm.add("의류");
-		dumm.add("4");
-
-		rowDatas.add(dumm);
+		
+		// 모두 설정 후 테이블 새로고침
+		refresh();
 	}
 	
 	/**
 	 * 테이블 새로 고침. "새로고침" 버튼에 의해 호출
 	 */
 	public void refresh() {
-		
 	}
 	
 	/**
@@ -155,15 +152,15 @@ public class MemberPanel extends JPanel {
 	 */
 	public void showModifyMember() {
 		
-		List<String> infoList = new ArrayList<String>();
+		Member member = new Member();
 		
 
 		//
-		// DB로부터 정보를 받아 infoList에 받음 (incomplete)
+		// DB로부터 정보를 받아 member에 받음 (incomplete)
 		//
 		
 		// 다이얼로그 팝업
-		MemberDialog memberDialog = new MemberDialog(infoList);
+		MemberDialog memberDialog = new MemberDialog(member);
 		
 		// 확인 버튼을 누르면 수정 작업
 		if(memberDialog.isOk()) {

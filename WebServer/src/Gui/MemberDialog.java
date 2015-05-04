@@ -20,6 +20,8 @@ import javax.swing.SpinnerNumberModel;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 
+import Elements.Member;
+
 /**
  * 회원 추가, 수정을 위한 다이얼로그 클래스
  * 
@@ -51,7 +53,7 @@ public class MemberDialog extends JDialog {
 	/**
 	 * 생성자. 회원 수정 버튼 누를 시 호출
 	 */
-	public MemberDialog(List<String> infoList) {
+	public MemberDialog(Member info) {
 		
 		// 다이얼로그 속성 설정
 		setTitle("\uD68C\uC6D0 \uAD00\uB9AC");
@@ -184,14 +186,14 @@ public class MemberDialog extends JDialog {
 		}
 		
 		// 받아온 정보를 필드에 설정
-		if(infoList != null) {
-			textFieldId.setText(infoList.get(0));
-			passwordFieldPassword.setText(infoList.get(1));
-			textFieldName.setText(infoList.get(2));
-			comboBoxSex.setSelectedItem("m".equals(infoList.get(3))?"남":"여");
-			spinnerAge.setValue(Integer.parseInt(infoList.get(4)));
-			textFieldFavorite.setText(infoList.get(5));
-			spinnerEnterCount.setValue(Integer.parseInt(infoList.get(6)));
+		if(info != null) {
+			textFieldId.setText(info.getId());
+			passwordFieldPassword.setText(info.getPassword());
+			textFieldName.setText(info.getName());
+			comboBoxSex.setSelectedItem(info.getSex() == 'm' ? "남" : "여");
+			spinnerAge.setValue(info.getAge());
+			textFieldFavorite.setText(info.getFavorite());
+			spinnerEnterCount.setValue(info.getEnterCount());
 		}
 		
 		// 창 보여줌.
@@ -201,23 +203,20 @@ public class MemberDialog extends JDialog {
 	/**
 	 * 입력한 정보들을 반환
 	 * 
-	 * @return information list
+	 * @return info
 	 */
-	public List<String> getInformations() {
+	public Member getInfo() {
 		
-		List<String> infoList = new ArrayList<String>();
-		infoList.add(textFieldId.getText());
-		infoList.add(String.valueOf(passwordFieldPassword.getPassword()));
-		infoList.add(textFieldName.getText());
+		Member info = new Member();
+		info.setId(textFieldId.getText());
+		info.setPassword(String.valueOf(passwordFieldPassword.getPassword()));
+		info.setName(textFieldName.getText());
+		info.setSex("남".equals(comboBoxSex.getSelectedIndex())?'m':'f');
+		info.setAge((Integer) spinnerAge.getValue());
+		info.setFavorite(textFieldFavorite.getText());
+		info.setEnterCount((Integer) spinnerEnterCount.getValue());	
 		
-		String sex = "남".equals((String) comboBoxSex.getSelectedItem())?"m":"f"; 
-		infoList.add(sex);
-		
-		infoList.add(Integer.toString((Integer) spinnerAge.getValue()));
-		infoList.add(textFieldFavorite.getText());
-		infoList.add(Integer.toString((Integer) spinnerEnterCount.getValue()));		
-		
-		return infoList;
+		return info;
 	}
 	
 	/**

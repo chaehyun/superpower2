@@ -57,6 +57,7 @@ public class MainFrame extends JFrame {
 	 * 생성자. 메인함수 수행시 호출됨.
 	 */
 	public MainFrame() {
+		setResizable(false);
 
 		// 메인 프레임의 Swing 요소 설정
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
@@ -103,9 +104,6 @@ public class MainFrame extends JFrame {
 		// 서버 시작
 		this.serverThread = new ServerThread();
 		this.serverThread.startServer();
-		
-		// 디비 연결
-		DbConnector.getInstance();
 	}
 
 	/**
