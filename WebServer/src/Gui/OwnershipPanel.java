@@ -2,13 +2,13 @@ package Gui;
 
 import java.util.Vector;
 
+import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.JButton;
 
-public class CouponPanel extends JPanel {
+public class OwnershipPanel extends JPanel {
 
 	private JTable table;
 	private Vector<Vector<String>> rowDatas;
@@ -16,7 +16,7 @@ public class CouponPanel extends JPanel {
 	/**
 	 * 생성자. Swing 컴포넌트 및 테이블 요소 초기화
 	 */
-	public CouponPanel() {
+	public OwnershipPanel() {
 		setLayout(null);
 
 		// "새로고침" 버튼
@@ -43,11 +43,9 @@ public class CouponPanel extends JPanel {
 
 		// 칼럼 제목
 		Vector<String> columnName = new Vector<String>();
+		columnName.add("회원ID");
 		columnName.add("쿠폰코드");
-		columnName.add("상품코드");
-		columnName.add("할인률");
-		columnName.add("시작일");
-		columnName.add("종료일");
+		columnName.add("사용여부");
 
 		// 행 데이터
 		rowDatas = new Vector<Vector<String>>();
@@ -73,11 +71,9 @@ public class CouponPanel extends JPanel {
 
 		// dummy
 		Vector<String> dumm = new Vector<String>();
+		dumm.add("psj");
 		dumm.add("32987");
-		dumm.add("TRUZHA");
-		dumm.add("25");
-		dumm.add("2015.04.09");
-		dumm.add("2015.04.20");
+		dumm.add("y");
 		rowDatas.add(dumm);
 	}
 
