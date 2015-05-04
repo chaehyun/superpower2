@@ -30,18 +30,18 @@ import Elements.Member;
  * @version 2015/5/4
  */
 public class MemberDialog extends JDialog {
-
-	private final JPanel contentPanel = new JPanel();
 	
-	private JTextField textFieldId;
-	private JPasswordField passwordFieldPassword;
-	private JTextField textFieldName;
-	private JComboBox<String> comboBoxSex;
-	private JSpinner spinnerAge;
-	private JTextField textFieldFavorite;
-	private JSpinner spinnerEnterCount;
+	private final JPanel contentPanel = new JPanel();	// Default
 	
-	private boolean ok = false;
+	private JTextField textFieldId;					// id 필드
+	private JPasswordField passwordFieldPassword;	// password 필드
+	private JTextField textFieldName;				// 이름 필드
+	private JComboBox<String> comboBoxSex;			// 성별 콤보박스
+	private JSpinner spinnerAge;					// 나이 스피너
+	private JTextField textFieldFavorite;			// 관심사 필드
+	private JSpinner spinnerEnterCount;				// 입장수 스피너
+	
+	private boolean ok = false;	// 확인,취소 버튼 여부	
 
 	/**
 	 * 생성자. 회원 추가 버튼 누를 시 호출
@@ -201,7 +201,7 @@ public class MemberDialog extends JDialog {
 	}
 	
 	/**
-	 * 입력한 정보들을 반환
+	 * 입력한 정보들을 반환. 수정 완료 시 호출
 	 * 
 	 * @return info
 	 */

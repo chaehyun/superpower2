@@ -91,6 +91,7 @@ public class MemberPanel extends JPanel {
 		// 테이블 모델
 		DefaultTableModel tableModel = new DefaultTableModel(rowDatas,
 				columnName) {
+			// 셀 편집 불가능으로 함
 			public boolean isCellEditable(int row, int column) {
 				return false;
 			}
@@ -106,6 +107,7 @@ public class MemberPanel extends JPanel {
 		table.getTableHeader().setReorderingAllowed(false);
 		table.getTableHeader().setResizingAllowed(false);
 		table.addMouseListener(new MouseAdapter() {
+			// 레코드 더블클릭 시 해당 회원의 정보창을 띄움
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				if (e.getClickCount() % 2 == 0) {
@@ -115,6 +117,7 @@ public class MemberPanel extends JPanel {
 			}
 		});
 		table.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
+			// 레코드 하나 선택 시 "수정", "삭제" 버튼 활성화
 			@Override
 			public void valueChanged(ListSelectionEvent arg0) {				
 				boolean isSelected = table.getSelectedRowCount() > 0;
@@ -132,6 +135,39 @@ public class MemberPanel extends JPanel {
 	 * 테이블 새로 고침. "새로고침" 버튼에 의해 호출
 	 */
 	public void refresh() {
+		try {
+			
+			// 기존 테이블 내용 지움
+			table.getSelectionModel().clearSelection();
+			rowDatas.clear();
+			
+			// DB로부터 회원 레코드들을 받아서 테이블에 추가
+			for(Member member : GetAllMembers.doAction()) {
+				Vector<String> row = new Vector<String>();
+				row.add(member.getId());
+				row.add(member.getName());
+				row.add(member.getSex() == 'm' ? "남" : "여");
+				row.add(Integer.toString(member.getAge()));
+				row.add(member.getFavorite());
+				row.add(Integer.toString(member.getEnterCount()));
+				
+				rowDatas.add(row);
+			}
+
+			// 각 열을 가운데 정렬
+			DefaultTableCellRenderer renderer = new DefaultTableCellRenderer();
+			renderer.setHorizontalAlignment(SwingConstants.CENTER);
+			for(int i=0;i<table.getColumnCount();i++) {				
+				table.getColumnModel().getColumn(i).setCellRenderer(renderer);
+			}
+			
+			// 테이블 그림 새로고침
+			table.setVisible(false);
+			table.setVisible(true);
+			
+		} catch(SQLException e) {
+			System.out.println("MemberPanel.refresh()에서 예외 발생 : " + e.getMessage());
+		}
 	}
 	
 	/**
@@ -143,7 +179,7 @@ public class MemberPanel extends JPanel {
 		
 		// 확인 버튼을 누르면 추가 작업
 		if(memberDialog.isOk()) {
-			
+			// 미완성
 		}
 	}
 	
@@ -164,7 +200,7 @@ public class MemberPanel extends JPanel {
 		
 		// 확인 버튼을 누르면 수정 작업
 		if(memberDialog.isOk()) {
-			
+			// 미완성
 		}		
 	}
 	
@@ -176,6 +212,7 @@ public class MemberPanel extends JPanel {
 		
 		// 확인을 누르면 회원 삭제
 		if(res == 0) {
+			// 미완성
 		}			
 	}
 }
