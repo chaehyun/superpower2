@@ -41,7 +41,7 @@ public class ItemPanel extends JPanel {
 
 		// 테이블을 담을 스크롤패널
 		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(12, 10, 729, 492);
+		scrollPane.setBounds(12, 43, 729, 459);
 		add(scrollPane);
 
 		// 테이블

@@ -71,15 +71,7 @@ public class MainFrame extends JFrame {
 		addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowClosing(WindowEvent arg0) {
-				
-				// 종료 확인 여부 창 띄움
-				int res = JOptionPane.showConfirmDialog(null,
-						"Are you sure?","Exit",
-						JOptionPane.OK_CANCEL_OPTION,JOptionPane.INFORMATION_MESSAGE);
-				
-				// yes 이면 프로그램 종료
-				if(res == 0)
-					closeForm();
+				closeForm();
 			}
 		});
 
@@ -122,6 +114,15 @@ public class MainFrame extends JFrame {
 	@SuppressWarnings("deprecation")
 	public void closeForm()
 	{
+		// 종료 확인 여부 창 띄움
+		int res = JOptionPane.showConfirmDialog(null,
+				"Are you sure?","Exit",
+				JOptionPane.OK_CANCEL_OPTION,JOptionPane.INFORMATION_MESSAGE);
+		
+		// no 이면 return
+		if(res != 0)
+			return;
+			
 		// 서버 종료
 		if(this.serverThread.isRunning()) {
 			this.serverThread.stop();

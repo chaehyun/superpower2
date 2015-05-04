@@ -53,7 +53,7 @@ public class ClientThread extends Thread {
 			// 서비스 시작
 			while(true) {
 			
-				// 클라이언트로부터 메시지를 받음.
+				// 클라이언트로부터 메시지를 받음 (Test)
 				Packet recvPacket = null;
 				if((recvPacket = (Packet) ois.readObject()) == null) {
 					break;
