@@ -20,6 +20,13 @@ import javax.swing.SpinnerNumberModel;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 
+/**
+ * 회원 추가, 수정을 위한 다이얼로그 클래스
+ * 
+ * @author Minji, Seongjun
+ * @since 2015/5/4
+ * @version 2015/5/4
+ */
 public class MemberDialog extends JDialog {
 
 	private final JPanel contentPanel = new JPanel();
@@ -38,6 +45,13 @@ public class MemberDialog extends JDialog {
 	 * 생성자. 회원 추가 버튼 누를 시 호출
 	 */
 	public MemberDialog() {
+		this(null);
+	}
+	
+	/**
+	 * 생성자. 회원 수정 버튼 누를 시 호출
+	 */
+	public MemberDialog(List<String> infoList) {
 		
 		// 다이얼로그 속성 설정
 		setTitle("\uD68C\uC6D0 \uAD00\uB9AC");
@@ -127,13 +141,13 @@ public class MemberDialog extends JDialog {
 		contentPanel.add(textFieldFavorite);
 		textFieldFavorite.setColumns(10);
 		
-		// 방문횟수 레이블
-		JLabel labelEnterCount = new JLabel("\uBC29\uBB38\uD69F\uC218 :");
+		// 입장수 레이블
+		JLabel labelEnterCount = new JLabel("\uC785\uC7A5\uC218 :");
 		labelEnterCount.setHorizontalAlignment(SwingConstants.RIGHT);
 		labelEnterCount.setBounds(12, 160, 95, 15);
 		contentPanel.add(labelEnterCount);
 		
-		// 방문횟수 스피너
+		// 입장수 스피너
 		spinnerEnterCount = new JSpinner();
 		spinnerEnterCount.setModel(new SpinnerNumberModel(new Integer(0),
 				new Integer(0), null, new Integer(1)));
@@ -169,20 +183,19 @@ public class MemberDialog extends JDialog {
 			}
 		}
 		
+		// 받아온 정보를 필드에 설정
+		if(infoList != null) {
+			textFieldId.setText(infoList.get(0));
+			passwordFieldPassword.setText(infoList.get(1));
+			textFieldName.setText(infoList.get(2));
+			comboBoxSex.setSelectedItem("m".equals(infoList.get(3))?"남":"여");
+			spinnerAge.setValue(Integer.parseInt(infoList.get(4)));
+			textFieldFavorite.setText(infoList.get(5));
+			spinnerEnterCount.setValue(Integer.parseInt(infoList.get(6)));
+		}
+		
 		// 창 보여줌.
 		setVisible(true);
-	}
-	
-	/**
-	 * 생성자. 회원 수정버튼 누를 시 호출
-	 * 
-	 * @param id
-	 */
-	public MemberDialog(String id) {
-		this();
-		
-		// 디비를 통해 정보를 받은 후 필드 설정
-		// 
 	}
 	
 	/**
@@ -208,7 +221,7 @@ public class MemberDialog extends JDialog {
 	}
 	
 	/**
-	 * 확인, 취소 버튼 눌렀는지 여부 반혼
+	 * 확인, 취소 버튼 눌렀는지 여부 반환
 	 * 
 	 * @return ok
 	 */
