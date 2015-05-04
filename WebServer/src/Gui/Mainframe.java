@@ -57,7 +57,7 @@ public class Mainframe extends JFrame {
 	public Mainframe() {
 
 		// 메인 프레임의 Swing 요소 설정
-		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		setBounds(0, 0, 800, 600);
 		this.setLocationRelativeTo(null);
 		contentPane = new JPanel();
@@ -118,10 +118,10 @@ public class Mainframe extends JFrame {
 	public void CloseForm()
 	{
 		if(this.serverThread.isRunning()) {
-			serverThread.stop();
+			this.serverThread.stop();
 		}
 		
-		serverThread.stopServer();
+		this.serverThread.stopServer();
 		System.exit(0);
 	}
 }

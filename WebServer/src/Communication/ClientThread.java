@@ -47,39 +47,32 @@ public class ClientThread extends Thread {
 		try {
 			
 			// 입출력 스트림 설정
-			this.ois = new ObjectInputStream(this.clientSocket.getInputStream());
-			this.oos = new ObjectOutputStream(this.clientSocket.getOutputStream());			
+			this.oos = new ObjectOutputStream(this.clientSocket.getOutputStream());	
+			this.ois = new ObjectInputStream(this.clientSocket.getInputStream());		
 
 			// 서비스 시작
 			while(true) {
 			
-				// 클라이언트로부터 메시지를 받음
-				Object recvMsg = null;
-				if((recvMsg = ois.readObject()) == null) {
-					throw new Exception("received null message");
+				// 클라이언트로부터 메시지를 받음.
+				Packet recvPacket = null;
+				if((recvPacket = (Packet) ois.readObject()) == null) {
+					break;
 				}
 				
-				// 메시지 헤더 별로 서비스 수행 후 답장
-				//
-				// (empty yet.)
-				//
+				// 메시지 헤더 별로 서비스 수행 후 답장 (Test)				
+				System.out.println( clientSocket.getInetAddress().getHostName() + " : " + recvPacket.msg);				
+				Packet sendPacket = new Packet("Hi"); 
+				oos.writeObject(sendPacket);
+				oos.flush();
 			}
 			
-		} catch(Exception e) {
-			System.out.println("ClientThread.run()에서 예외 발생 : " + e.getMessage());
+		} catch(IOException | ClassNotFoundException e) {
 		}
 		
 		// 클라이언트 종료 및 서버에서 리스트로부터 제거됨.
+		System.out.println("Client 퇴장 : " + clientSocket.getInetAddress().getHostName());
 		this.closeClient();
 		this.serverThread.removeClientFromList(this);
-	}
-	
-	/**
-	 * 클라이언트 시작. 단순히 스레드 run 부분을 실행함.
-	 */
-	public void startClient() {
-		
-		this.start();
 	}
 	
 	/**

@@ -53,6 +53,7 @@ public class ServerThread extends Thread {
 				
 				// 클라이언트 하나 accept 함 (블록됨).
 				Socket clientSocket = this.serverSocket.accept();
+				System.out.println("Client 입장 : " + clientSocket.getInetAddress().getHostName());
 				
 				// 한 클라이언트 전용 스레드 실행 및 리스트에 추가
 				ClientThread clientThread = new ClientThread(this, clientSocket);
