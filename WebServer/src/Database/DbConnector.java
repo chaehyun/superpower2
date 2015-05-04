@@ -2,6 +2,7 @@ package Database;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.SQLException;
 
 public class DbConnector {
 	
@@ -31,6 +32,16 @@ public class DbConnector {
 			System.out.println("Success - Connect MySQL");
 		} catch (Exception e) {
 			System.out.println("Failed - Connect MySQL");
+		}
+	}
+	
+	public void closeConnection() {
+		try {
+			connection.close();
+			
+			System.out.println("Success - Disconnect MySQL");
+		} catch(SQLException e) {
+			System.out.println("Failed - Disconnect MySQL");
 		}
 	}
 	

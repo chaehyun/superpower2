@@ -122,21 +122,16 @@ public class MainFrame extends JFrame {
 	@SuppressWarnings("deprecation")
 	public void closeForm()
 	{
-		try {
-			// 서버 종료
-			if(this.serverThread.isRunning()) {
-				this.serverThread.stop();
-			}
-			this.serverThread.stopServer();
-			
-			// 디비 종료
-			DbConnector.getInstance().getConnection().close();
-			
-			// 프로그램 종료
-			System.exit(0);
-			
-		} catch(SQLException e) {
-			System.out.println("MainFrame.closeForm()에서 예외 발생 : " + e.getMessage());
+		// 서버 종료
+		if(this.serverThread.isRunning()) {
+			this.serverThread.stop();
 		}
+		this.serverThread.stopServer();
+		
+		// 디비 종료
+		DbConnector.getInstance().closeConnection();
+		
+		// 프로그램 종료
+		System.exit(0);
 	}
 }
