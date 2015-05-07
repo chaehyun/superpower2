@@ -17,7 +17,7 @@ public class Login{
 		String flag = null;
 		
 		try{
-			String query = "select pwd, logflag from member where id = ?";	
+			String query = "select password, logflag from member where id = ?";	
 			PreparedStatement pstmt = DbConnector.getInstance().getConnection().prepareStatement(query);
 			
 			pstmt.setString(1,  userid);
