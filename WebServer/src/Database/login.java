@@ -16,7 +16,7 @@ public class login{
 			
 			ResultSet rs = pstmt.executeQuery();
 			while(rs.next()){
-				pwd = rs.getString("pwd");
+				pwd = rs.getString("password");
 			}
 		}catch(Exception e){
 			System.err.println("sql error = " + e.getMessage());
