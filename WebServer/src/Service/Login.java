@@ -9,7 +9,7 @@ import Database.DbConnector;
 
 public class Login{
 	
-	public JSONObject logincheck(String userid, String userpwd){
+	public static JSONObject logincheck(String userid, String userpwd){
 		
 		JSONObject response = new JSONObject();
 		
@@ -32,7 +32,7 @@ public class Login{
 		}
 		
 		// password일치 및 flag값이 false이면 true
-		if(userpwd.equals(pwd) == true && flag.equals("f")){
+		if(userpwd.equals(pwd) && flag.equals("f")){
 			try {
 				response.put("MessageType", "res_login");
 				response.put("Result", true);

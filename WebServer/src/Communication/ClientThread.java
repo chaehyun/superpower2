@@ -3,16 +3,14 @@ package Communication;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.net.Socket;
-<<<<<<< HEAD
 import java.nio.charset.StandardCharsets;
 import java.util.Scanner;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
-=======
-// 변경
->>>>>>> refs/heads/minji
+import Service.Login;
+
 /**
  * 클라이언트에게 서비스를 제공하는 스레드 클래스.
  * 
@@ -69,6 +67,8 @@ public class ClientThread extends Thread {
 				JSONObject sendMsg = null;
 				switch (recvMsg.getString("MessageType")) {
 				case "req_login":
+					sendMsg = Login.logincheck(recvMsg.getString("ID"),
+							recvMsg.getString("Password"));
 					break;
 				case "req_best_list":
 					break;
@@ -76,9 +76,8 @@ public class ClientThread extends Thread {
 					break;
 				}
 
-				// 결과 JSON을 클라이언트로 보냄				
+				// 결과 JSON을 클라이언트로 보냄
 				this.outputWriter.write(sendMsg.toString());
-				
 			}
 		} catch (IOException | JSONException e) {
 		}
@@ -86,7 +85,7 @@ public class ClientThread extends Thread {
 		// 클라이언트 종료 및 서버에서 리스트로부터 제거됨.
 		System.out.println("Client 퇴장 : "
 				+ clientSocket.getInetAddress().getHostName());
-		
+
 		this.closeClient();
 		this.serverThread.removeClientFromList(this);
 	}
