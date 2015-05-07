@@ -2,6 +2,7 @@ package Service;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import Database.DbConnector;
@@ -30,14 +31,25 @@ public class Login{
 			System.err.println("sql error = " + e.getMessage());
 		}
 		
+		// password일치 및 flag값이 false이면 true
 		if(userpwd.equals(pwd) == true && flag.equals("f")){
-			response.put("MessageType", "res_login");
-			response.put("Result", true);
+			try {
+				response.put("MessageType", "res_login");
+				response.put("Result", true);
+			} catch (JSONException e) {
+				e.printStackTrace();
+			}
 		}
 		else{
-			response.put("MessageType", "res_login");
-			response.put("Result", false)
+			try {
+				response.put("MessageType", "res_login");
+				response.put("Result", false);
+			} catch (JSONException e) {
+				e.printStackTrace();
+			}
 		}
+		
+		return response;
 	}
 	
 }
