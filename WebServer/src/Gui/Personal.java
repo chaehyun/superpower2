@@ -55,6 +55,9 @@ public class Personal extends JFrame {
 		table.getTableHeader().setResizingAllowed(false);
 		scrollPane.setViewportView(table);
 
+		Vector<String> personalitem = new Vector<String>();
+		personalitem.add
+		/*
 		// dummy
 		Vector<String> dumm = new Vector<String>();
 		dumm.add("TRUZHA");
@@ -62,7 +65,7 @@ public class Personal extends JFrame {
 		dumm.add("2015.04.09");
 
 		rowDatas.add(dumm);
-
+		*/
 		// Ä®·³ Á¦¸ñ
 		Vector<String> columnName2 = new Vector<String>();
 		columnName2.add("ÄíÆùÄÚµå");
