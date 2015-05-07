@@ -75,7 +75,7 @@ public class ItemDialog extends JDialog {
 		contentPanel.setLayout(null);
 
 		// 상품코드 레이블
-		JLabel labelICode = new JLabel("\uCFE0\uD3F0\uCF54\uB4DC :");
+		JLabel labelICode = new JLabel("\uC0C1\uD488\uCF54\uB4DC :");
 		labelICode.setHorizontalAlignment(SwingConstants.RIGHT);
 		labelICode.setBounds(12, 10, 95, 15);
 		contentPanel.add(labelICode);
