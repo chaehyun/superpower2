@@ -9,9 +9,9 @@ public class DbConnector {
 	// for singletone
 	private static DbConnector instance = null;
 
-	private String url = "jdbc:mysql://localhost:3306/super_power";
-	private String user = "root";
-	private String password = "root";
+	private String url = "jdbc:mysql://20.20.3.181:3306/super_power";
+	private String user = "minji";
+	private String password = "minji";
 	private Connection connection;
 
 	// ΩÃ±€≈Ê ∞¥√º π›»Ø

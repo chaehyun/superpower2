@@ -27,7 +27,7 @@ public class GetAllCoupons {
 			coupon.seti_code(resultSet.getString("i_code"));
 			coupon.setdiscount(resultSet.getInt("discount"));
 			coupon.setbegin_date(resultSet.getDate("begin_date"));
-			coupon.setend_date(resultSet.getDate("end_ate"));
+			coupon.setend_date(resultSet.getDate("end_date"));
 
 			couponList.add(coupon);
 		}
