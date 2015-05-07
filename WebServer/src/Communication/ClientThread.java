@@ -30,6 +30,8 @@ public class ClientThread extends Thread {
 
 	private BufferedReader bufferedReader;
 	private PrintWriter printWriter;
+	
+	private String id;
 
 	/**
 	 * 생성자. 각종 멤버변수를 초기화.
@@ -43,6 +45,7 @@ public class ClientThread extends Thread {
 		this.clientSocket = clientSocket;
 		this.bufferedReader = null;
 		this.printWriter = null;
+		this.id = "";
 	}
 
 	/**
@@ -75,6 +78,9 @@ public class ClientThread extends Thread {
 				case "req_login":
 					sendMsg = Login.logincheck(recvMsg.getString("ID"),
 							recvMsg.getString("Password"));
+					if(sendMsg.getBoolean("Result")) {
+						this.id = recvMsg.getString("ID");
+					}
 					break;
 				case "req_best_list":
 					break;
@@ -119,6 +125,8 @@ public class ClientThread extends Thread {
 				this.clientSocket = null;
 			}
 
+			Login.setlogflag(this.id, false);
+			
 		} catch (Exception e) {
 			System.out.println("ClientThread.stopClient()에서 예외 발생 : "
 					+ e.getMessage());

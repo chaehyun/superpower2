@@ -39,6 +39,7 @@ public class Login{
 			} catch (JSONException e) {
 				e.printStackTrace();
 			}
+			setlogflag(userid, true);
 		}
 		else{
 			try {
@@ -52,4 +53,21 @@ public class Login{
 		return response;
 	}
 	
+	public static void setlogflag(String userid, boolean flag){
+		try{
+			DbConnector.getInstance().getConnection().setAutoCommit(false);
+			
+			String query = "update member set logflag = ? where id = ?";
+			PreparedStatement pstmt = DbConnector.getInstance().getConnection().prepareStatement(query);
+			pstmt.setString(1,  flag ? "t" : "f");
+			pstmt.setString(2,  userid);
+			int result = pstmt.executeUpdate();
+			DbConnector.getInstance().getConnection().commit();
+			DbConnector.getInstance().getConnection().setAutoCommit(true);
+			
+		}catch(Exception e){
+			System.err.println("sql error = " + e.getMessage());
+		}
+		
+	}
 }
