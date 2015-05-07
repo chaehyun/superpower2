@@ -3,12 +3,16 @@ package Communication;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.net.Socket;
+<<<<<<< HEAD
 import java.nio.charset.StandardCharsets;
 import java.util.Scanner;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
+=======
+// 변경
+>>>>>>> refs/heads/minji
 /**
  * 클라이언트에게 서비스를 제공하는 스레드 클래스.
  * 

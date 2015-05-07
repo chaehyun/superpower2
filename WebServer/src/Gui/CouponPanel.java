@@ -1,16 +1,16 @@
 package Gui;
 
 import java.sql.SQLException;
-import java.util.Date;
+import java.text.SimpleDateFormat;
 import java.util.Vector;
 
+import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.JButton;
 
 import Database.GetAllCoupons;
 import Elements.Coupon;
@@ -78,17 +78,6 @@ public class CouponPanel extends JPanel {
 		table.getTableHeader().setResizingAllowed(false);
 		scrollPane.setViewportView(table);
 		
-		/*
-		// dummy
-		Vector<String> dumm = new Vector<String>();
-		dumm.add("32987");
-		dumm.add("TRUZHA");
-		dumm.add("25");
-		dumm.add("2015.04.09");
-		dumm.add("2015.04.20");
-		rowDatas.add(dumm);
-	*/
-		
 		refresh();
 	}
 	
@@ -104,8 +93,14 @@ public class CouponPanel extends JPanel {
 				row.add(coupon.getc_code());
 				row.add(coupon.geti_code());
 				row.add(Integer.toString(coupon.getdiscount()));
-				//row.add(coupon.getbegin_date());
-				//row.add(coupon.getend_date());
+				
+				
+				SimpleDateFormat date = new SimpleDateFormat("yyyy-MM-dd");
+				
+				row.add(date.format(coupon.getbegin_date()));
+				row.add(date.format(coupon.getend_date()));
+				
+				rowDatas.add(row);
 			}
 			
 			// 각 열을 가운데 정렬
