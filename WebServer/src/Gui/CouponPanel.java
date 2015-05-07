@@ -113,7 +113,8 @@ public class CouponPanel extends JPanel {
 			}
 		});
 		scrollPane.setViewportView(table);
-		
+
+		// 모두 설정 후 테이블 새로고침
 		refresh();
 	}
 	
@@ -192,12 +193,12 @@ public class CouponPanel extends JPanel {
 	}
 	
 	/**
-	 * 확인 여부를 묻고 선택한 회원을 삭제함. "삭제" 버튼에 의해 호출
+	 * 확인 여부를 묻고 선택한 쿠폰을 삭제함. "삭제" 버튼에 의해 호출
 	 */
 	public void deleteCoupon() {
 		int res = JOptionPane.showConfirmDialog(null,"Are you sure?","Delete",JOptionPane.OK_CANCEL_OPTION,JOptionPane.INFORMATION_MESSAGE);
 		
-		// 확인을 누르면 회원 삭제
+		// 확인을 누르면 쿠폰 삭제
 		if(res == 0) {
 			// 미완성
 		}			
