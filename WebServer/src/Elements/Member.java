@@ -5,7 +5,7 @@ package Elements;
  * 
  * @author Minji, Seongjun
  * @since 2015/5/4
- * @version 2015/5/4
+ * @version 2015/5/7
  */
 public class Member {
 	private String id;
@@ -15,6 +15,7 @@ public class Member {
 	private int age;
 	private String favorite;
 	private int enterCount;
+	private boolean logFlag;
 	
 	public void setId(String id) {
 		this.id = id;
@@ -44,6 +45,10 @@ public class Member {
 		this.enterCount = enterCount;
 	}
 	
+	public void setLogFlag(boolean logFlag) {
+		this.logFlag = logFlag;
+	}
+	
 	public String getId() {
 		return this.id;
 	}
@@ -70,5 +75,9 @@ public class Member {
 	
 	public int getEnterCount() {
 		return this.enterCount;
+	}
+	
+	public boolean getLogFlag() {
+		return this.logFlag;
 	}
 }

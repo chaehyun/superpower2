@@ -211,7 +211,7 @@ public class MemberDialog extends JDialog {
 		info.setId(textFieldId.getText());
 		info.setPassword(String.valueOf(passwordFieldPassword.getPassword()));
 		info.setName(textFieldName.getText());
-		info.setSex("³²".equals(comboBoxSex.getSelectedIndex())?'m':'f');
+		info.setSex("³²".equals((String) comboBoxSex.getSelectedItem())?'m':'f');
 		info.setAge((Integer) spinnerAge.getValue());
 		info.setFavorite(textFieldFavorite.getText());
 		info.setEnterCount((Integer) spinnerEnterCount.getValue());	
