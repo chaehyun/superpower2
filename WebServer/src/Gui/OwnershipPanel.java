@@ -1,12 +1,20 @@
 package Gui;
 
+import java.sql.SQLException;
 import java.util.Vector;
 
 import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.SwingConstants;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
+
+import Database.GetAllItems;
+import Database.GetAllOwnership;
+import Elements.Item;
+import Elements.Ownership;
 
 public class OwnershipPanel extends JPanel {
 
@@ -69,12 +77,38 @@ public class OwnershipPanel extends JPanel {
 		table.getTableHeader().setResizingAllowed(false);
 		scrollPane.setViewportView(table);
 
-		// dummy
-		Vector<String> dumm = new Vector<String>();
-		dumm.add("psj");
-		dumm.add("32987");
-		dumm.add("y");
-		rowDatas.add(dumm);
+		refresh();
+	}
+	public void refresh(){
+		try{
+			// 기존 테이블 clear
+			table.getSelectionModel().clearSelection();
+			rowDatas.clear();
+			
+			// DB로 부터 coupon 읽어와서 추가
+			for(Ownership ownership : GetAllOwnership.doAction()){
+				Vector<String> row = new Vector<String>();
+				row.add(ownership.getId());
+				row.add(ownership.getC_code());
+				row.add(ownership.getUsed());
+	
+				rowDatas.add(row);
+			}
+			
+			// 각 열을 가운데 정렬
+			DefaultTableCellRenderer renderer = new DefaultTableCellRenderer();
+			renderer.setHorizontalAlignment(SwingConstants.CENTER);
+			for(int i=0;i<table.getColumnCount();i++) {				
+				table.getColumnModel().getColumn(i).setCellRenderer(renderer);
+			}
+						
+			// 테이블 그림 새로고침
+			table.setVisible(false);
+			table.setVisible(true);
+			
+		}catch(SQLException e){
+			System.out.println("OwnershipPanel.refresh()에서 예외 발생 : " + e.getMessage());
+		}
 	}
 
 }
