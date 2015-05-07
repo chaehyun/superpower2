@@ -111,7 +111,7 @@ public class MemberPanel extends JPanel {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				if (e.getClickCount() % 2 == 0) {
-					Personal personal = new Personal();
+					Personal personal = new Personal(rowDatas.get(table.getSelectedRow()).get(0));
 					personal.setVisible(true);
 				}
 			}
