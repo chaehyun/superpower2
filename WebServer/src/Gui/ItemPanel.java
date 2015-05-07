@@ -1,11 +1,20 @@
 package Gui;
+import java.sql.SQLException;
+import java.text.SimpleDateFormat;
 import java.util.Vector;
 
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.SwingConstants;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.JButton;
+
+import Database.GetAllCoupons;
+import Database.GetAllItems;
+import Elements.Coupon;
+import Elements.Item;
 
 public class ItemPanel extends JPanel {
 
@@ -73,16 +82,44 @@ public class ItemPanel extends JPanel {
 		table.getTableHeader().setResizingAllowed(false);
 		scrollPane.setViewportView(table);
 		
-		// dummy
-		Vector<String> dumm = new Vector<String>();
-		dumm.add("TRUZHA");
-		dumm.add("의류");
-		dumm.add("여성복");
-		dumm.add("치마");
-		dumm.add("20");
-		dumm.add("3");
-		dumm.add("19900");
-		dumm.add("c\\user");		
-		rowDatas.add(dumm);
+		refresh();
 	}
+	
+	public void refresh(){
+		try{
+			// 기존 테이블 clear
+			table.getSelectionModel().clearSelection();
+			rowDatas.clear();
+			
+			// DB로 부터 coupon 읽어와서 추가
+			for(Item item : GetAllItems.doAction()){
+				Vector<String> row = new Vector<String>();
+				row.add(item.geti_code());
+				row.add(item.getmajor());
+				row.add(item.getmiddle());
+				row.add(item.getminor());
+				row.add(Integer.toString(item.getsales_volume()));
+				row.add(Integer.toString(item.gettotal_stock()));
+				row.add(Integer.toString(item.getprice()));
+				row.add(item.getimage());
+	
+				rowDatas.add(row);
+			}
+			
+			// 각 열을 가운데 정렬
+			DefaultTableCellRenderer renderer = new DefaultTableCellRenderer();
+			renderer.setHorizontalAlignment(SwingConstants.CENTER);
+			for(int i=0;i<table.getColumnCount();i++) {				
+				table.getColumnModel().getColumn(i).setCellRenderer(renderer);
+			}
+						
+			// 테이블 그림 새로고침
+			table.setVisible(false);
+			table.setVisible(true);
+			
+		}catch(SQLException e){
+			System.out.println("ItemPanel.refresh()에서 예외 발생 : " + e.getMessage());
+		}
+	}
+	
 }
