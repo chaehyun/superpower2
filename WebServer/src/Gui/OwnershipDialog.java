@@ -113,7 +113,7 @@ public class OwnershipDialog extends JDialog {
 		comboBoxUsed.setModel(new DefaultComboBoxModel(new String[] {
 				"사용함", "사용 안 함" }));
 		comboBoxUsed.setSelectedIndex(0);
-		comboBoxUsed.setBounds(119, 57, 82, 21);
+		comboBoxUsed.setBounds(119, 57, 116, 21);
 		contentPanel.add(comboBoxUsed);
 
 		// 확인, 취소버튼 (Default)
