@@ -36,6 +36,7 @@ public class GetAllMembers {
 			member.setAge(resultSet.getInt("age"));
 			member.setFavorite(resultSet.getString("favorite"));
 			member.setEnterCount(resultSet.getInt("enter_count"));
+			member.setLogFlag("t".equals(resultSet.getString("logflag")));
 
 			memberList.add(member);
 		}

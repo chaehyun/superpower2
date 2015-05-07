@@ -63,8 +63,11 @@ public class ClientThread extends Thread {
 			while (true) {
 
 				// 클라이언트로부터 JSON 메시지를 받음
-				JSONObject recvMsg = new JSONObject(
-						this.bufferedReader.readLine());
+				String line = this.bufferedReader.readLine();
+				if (line == null) {
+					break;
+				}
+				JSONObject recvMsg = new JSONObject(line);
 
 				// 메시지 타입별로 서비스 후 결과를 sendMsg로 보낼 준비
 				JSONObject sendMsg = null;

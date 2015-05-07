@@ -84,6 +84,7 @@ public class MemberPanel extends JPanel {
 		columnName.add("나이");
 		columnName.add("관심사");
 		columnName.add("입장수");
+		columnName.add("접속여부");
 
 		// 행 데이터
 		rowDatas = new Vector<Vector<String>>();
@@ -150,6 +151,7 @@ public class MemberPanel extends JPanel {
 				row.add(Integer.toString(member.getAge()));
 				row.add(member.getFavorite());
 				row.add(Integer.toString(member.getEnterCount()));
+				row.add(member.getLogFlag() ? "On" : "Off");
 				
 				rowDatas.add(row);
 			}
