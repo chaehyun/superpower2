@@ -21,6 +21,7 @@ import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 
 import Database.GetAllItems;
+import Database.InsertCoupon;
 import Elements.Coupon;
 import Elements.Item;
 
@@ -176,6 +177,11 @@ public class CouponDialog extends JDialog {
 		
 		// √¢ ∫∏ø©¡‹.
 		setVisible(true);
+		
+		// DBø° insert
+		Coupon newcoupon = new Coupon();
+		newcoupon = getInfo();
+		InsertCoupon.insertcoupon(newcoupon);
 	}
 	
 	/**
