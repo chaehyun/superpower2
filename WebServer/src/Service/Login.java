@@ -49,6 +49,13 @@ public class Login{
 			}
 		}
 		
+		try {
+			System.out.println("로그인 시도 : " + userid + " " + userpwd + " " + (response.getBoolean("Result") ? "true" : "false"));
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 		return response;
 	}
 	
