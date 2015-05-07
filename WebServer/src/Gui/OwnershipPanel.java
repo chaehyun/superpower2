@@ -11,9 +11,7 @@ import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 
-import Database.GetAllItems;
 import Database.GetAllOwnership;
-import Elements.Item;
 import Elements.Ownership;
 
 public class OwnershipPanel extends JPanel {

@@ -11,9 +11,8 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.JButton;
 
-import Database.GetAllCoupons;
+
 import Database.GetAllItems;
-import Elements.Coupon;
 import Elements.Item;
 
 public class ItemPanel extends JPanel {

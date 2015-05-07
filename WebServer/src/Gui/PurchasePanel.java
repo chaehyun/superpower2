@@ -1,12 +1,19 @@
 package Gui;
 
+import java.sql.SQLException;
+import java.text.SimpleDateFormat;
 import java.util.Vector;
 
 import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.SwingConstants;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
+
+import Database.GetAllPurchase;
+import Elements.Purchase;
 
 public class PurchasePanel extends JPanel {
 
@@ -70,12 +77,42 @@ public class PurchasePanel extends JPanel {
 		table.getTableHeader().setResizingAllowed(false);
 		scrollPane.setViewportView(table);
 
-		// dummy
-		Vector<String> dumm = new Vector<String>();
-		dumm.add("psj");
-		dumm.add("TRUZHA");
-		dumm.add("1");
-		dumm.add("2015.5.1");
-		rowDatas.add(dumm);
+		refresh();
+	}
+	
+	public void refresh(){
+		try{
+			// 기존 테이블 clear
+			table.getSelectionModel().clearSelection();
+			rowDatas.clear();
+			
+			// DB로 부터 coupon 읽어와서 추가
+			for(Purchase purchase : GetAllPurchase.doAction()){
+				Vector<String> row = new Vector<String>();
+				row.add(purchase.getId());
+				row.add(purchase.getI_code());
+				row.add(Integer.toString(purchase.getCount()));
+				
+				SimpleDateFormat date = new SimpleDateFormat("yyyy-MM-dd");
+				
+				row.add(date.format(purchase.getPur_date()));
+	
+				rowDatas.add(row);
+			}
+			
+			// 각 열을 가운데 정렬
+			DefaultTableCellRenderer renderer = new DefaultTableCellRenderer();
+			renderer.setHorizontalAlignment(SwingConstants.CENTER);
+			for(int i=0;i<table.getColumnCount();i++) {				
+				table.getColumnModel().getColumn(i).setCellRenderer(renderer);
+			}
+						
+			// 테이블 그림 새로고침
+			table.setVisible(false);
+			table.setVisible(true);
+			
+		}catch(SQLException e){
+			System.out.println("PurchasePanel.refresh()에서 예외 발생 : " + e.getMessage());
+		}
 	}
 }
