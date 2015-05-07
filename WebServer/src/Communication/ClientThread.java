@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
-
+// 변경
 /**
  * 클라이언트에게 서비스를 제공하는 스레드 클래스.
  * 
