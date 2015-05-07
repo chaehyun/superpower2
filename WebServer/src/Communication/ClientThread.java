@@ -1,13 +1,12 @@
 package Communication;
 
 import java.io.BufferedReader;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.net.Socket;
-import java.nio.charset.StandardCharsets;
-import java.util.Scanner;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -56,21 +55,16 @@ public class ClientThread extends Thread {
 
 			// 입출력 스트림 설정
 			this.bufferedReader = new BufferedReader(new InputStreamReader(
-					this.clientSocket.getInputStream()));
-			this.printWriter = new PrintWriter(new OutputStreamWriter(
+					new DataInputStream(this.clientSocket.getInputStream())));
+			this.printWriter = new PrintWriter(new DataOutputStream(
 					this.clientSocket.getOutputStream()));
 
 			// 서비스 시작
 			while (true) {
 
 				// 클라이언트로부터 JSON 메시지를 받음
-				StringBuffer buffer = new StringBuffer();
-				String line = null;
-				while((line = this.bufferedReader.readLine()) != null) {
-					buffer.append(line);
-				}
-				JSONObject recvMsg = new JSONObject(buffer.toString());
-				System.out.println("클라이언트로부터 메시지 받았음");
+				JSONObject recvMsg = new JSONObject(
+						this.bufferedReader.readLine());
 
 				// 메시지 타입별로 서비스 후 결과를 sendMsg로 보낼 준비
 				JSONObject sendMsg = null;
@@ -88,7 +82,6 @@ public class ClientThread extends Thread {
 				// 결과 JSON을 클라이언트로 보냄
 				this.printWriter.println(sendMsg.toString());
 				this.printWriter.flush();
-				System.out.println("클라이언트에게 메시지 보냄");
 			}
 		} catch (IOException | JSONException e) {
 		}
