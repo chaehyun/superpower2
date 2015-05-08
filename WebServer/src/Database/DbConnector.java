@@ -41,7 +41,7 @@ public class DbConnector {
 			
 			System.out.println("Success - Disconnect MySQL");
 		} catch(SQLException e) {
-			System.out.println("Failed - Disconnect MySQL");
+			System.out.println("Failed - Disconnect MySQL : " + e.getMessage());
 		}
 	}
 	
