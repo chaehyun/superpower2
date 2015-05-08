@@ -9,7 +9,7 @@ public class DbConnector {
 	// for singletone
 	private static DbConnector instance = null;
 
-	private String url = "jdbc:mysql://192.168.1.104:3306/super_power";
+	private String url = "jdbc:mysql://iamrch.iptime.org:9494/super_power";
 	private String user = "minji";
 	private String password = "minji";
 	private Connection connection;
@@ -30,8 +30,8 @@ public class DbConnector {
 			this.connection = DriverManager.getConnection(url, user, password);
 
 			System.out.println("Success - Connect MySQL");
-		} catch (Exception e) {
-			System.out.println("Failed - Connect MySQL");
+		} catch (SQLException | ClassNotFoundException e) {
+			System.out.println("Failed - Connect MySQL : " + e.getMessage());
 		}
 	}
 	
