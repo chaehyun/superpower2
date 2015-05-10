@@ -15,18 +15,23 @@ public class Login{
 		
 		String pwd = null;
 		String flag = null;
+		int count = 0;
 		
 		try{
-			String query = "select password, logflag from member where id = ?";	
+			String query = "select password, count, logflag from member where id = ?";	
 			PreparedStatement pstmt = DbConnector.getInstance().getConnection().prepareStatement(query);
 			
 			pstmt.setString(1,  userid);
 			
 			ResultSet rs = pstmt.executeQuery();
+			
+			// userid 의 pwd와 count, flag읽어옴
 			while(rs.next()){
 				pwd = rs.getString("password");
+				count = rs.getInt("count");
 				flag = rs.getString("logflag");
 			}
+			
 		}catch(Exception e){
 			System.err.println("sql error = " + e.getMessage());
 		}
@@ -39,7 +44,9 @@ public class Login{
 			} catch (JSONException e) {
 				e.printStackTrace();
 			}
+			// logflag와 count set
 			setlogflag(userid, true);
+			setcount(userid, count++);
 		}
 		else{
 			try {
@@ -60,13 +67,36 @@ public class Login{
 		return response;
 	}
 	
+
+	// logflag 변화 (중복 로그인 방지)
 	public static void setlogflag(String userid, boolean flag){
+		
 		try{
 			DbConnector.getInstance().getConnection().setAutoCommit(false);
 			
 			String query = "update member set logflag = ? where id = ?";
 			PreparedStatement pstmt = DbConnector.getInstance().getConnection().prepareStatement(query);
 			pstmt.setString(1,  flag ? "t" : "f");
+			pstmt.setString(2,  userid);
+			int result = pstmt.executeUpdate();
+			DbConnector.getInstance().getConnection().commit();
+			DbConnector.getInstance().getConnection().setAutoCommit(true);
+			
+		}catch(Exception e){
+			System.err.println("sql error = " + e.getMessage());
+		}
+		
+	}
+	
+	// 입장수 count++
+	public static void setcount(String userid, int count){
+		
+		try{
+			DbConnector.getInstance().getConnection().setAutoCommit(false);
+			
+			String query = "update member set count = ? where id = ?";
+			PreparedStatement pstmt = DbConnector.getInstance().getConnection().prepareStatement(query);
+			pstmt.setInt(1,  count);
 			pstmt.setString(2,  userid);
 			int result = pstmt.executeUpdate();
 			DbConnector.getInstance().getConnection().commit();

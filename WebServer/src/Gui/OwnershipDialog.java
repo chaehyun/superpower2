@@ -17,6 +17,8 @@ import javax.swing.border.EmptyBorder;
 
 import Database.GetAllCoupons;
 import Database.GetAllMembers;
+import Database.InsertCoupon;
+import Database.InsertOwnership;
 import Elements.Coupon;
 import Elements.Member;
 import Elements.Ownership;
@@ -154,6 +156,12 @@ public class OwnershipDialog extends JDialog {
 
 		// √¢ ∫∏ø©¡‹.
 		setVisible(true);
+		
+		// DBø° insert
+		Ownership newownership = new Ownership();
+		newownership = getInfo();
+		InsertOwnership.insertownership(newownership);
+		
 	}
 
 	/**
