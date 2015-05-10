@@ -16,6 +16,8 @@ import javax.swing.table.DefaultTableModel;
 import Database.GetAllPurchase;
 import Elements.Ownership;
 import Elements.Purchase;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 public class PurchasePanel extends JPanel {
 
@@ -30,22 +32,42 @@ public class PurchasePanel extends JPanel {
 
 		// "새로고침" 버튼
 		JButton buttonRefresh = new JButton("\uC0C8\uB85C\uACE0\uCE68");
+		buttonRefresh.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				refresh();
+			}
+		});
 		buttonRefresh.setBounds(12, 10, 97, 23);
 		add(buttonRefresh);
 
 		// "추가" 버튼
 		JButton buttonInsert = new JButton("\uCD94\uAC00");
+		buttonInsert.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				showAddPurchase();
+			}
+		});
 		buttonInsert.setBounds(426, 10, 97, 23);
 		add(buttonInsert);
 
 		// "수정" 버튼
 		JButton buttonModify = new JButton("\uC218\uC815");
+		buttonModify.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				showModifyPurchase();
+			}
+		});
 		buttonModify.setEnabled(false);
 		buttonModify.setBounds(535, 10, 97, 23);
 		add(buttonModify);
 
 		// "삭제" 버튼
 		JButton buttonDelete = new JButton("\uC0AD\uC81C");
+		buttonDelete.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				deletePurchase();
+			}
+		});
 		buttonDelete.setEnabled(false);
 		buttonDelete.setBounds(644, 10, 97, 23);
 		add(buttonDelete);
