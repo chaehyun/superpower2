@@ -45,14 +45,14 @@ public class CouponDialog extends JDialog {
 	private boolean ok = false;	// 확인,취소 버튼 여부	
 
 	/**
-	 * 생성자. 회원 추가 버튼 누를 시 호출
+	 * 생성자. 쿠폰 추가 버튼 누를 시 호출
 	 */
 	public CouponDialog() {
 		this(null);
 	}
 	
 	/**
-	 * 생성자. 회원 수정 버튼 누를 시 호출
+	 * 생성자. 쿠폰 수정 버튼 누를 시 호출
 	 */
 	public CouponDialog(Coupon info) {
 		

@@ -113,7 +113,7 @@ public class OwnershipPanel extends JPanel {
 			table.getSelectionModel().clearSelection();
 			rowDatas.clear();
 
-			// DB로 부터 coupon 읽어와서 추가
+			// DB로 부터 ownership 읽어와서 추가
 			for (Ownership ownership : GetAllOwnership.doAction()) {
 				Vector<String> row = new Vector<String>();
 				row.add(ownership.getId());

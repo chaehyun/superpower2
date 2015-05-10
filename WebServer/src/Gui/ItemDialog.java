@@ -49,14 +49,14 @@ public class ItemDialog extends JDialog {
 	private boolean ok = false; // 확인,취소 버튼 여부
 
 	/**
-	 * 생성자. 회원 추가 버튼 누를 시 호출
+	 * 생성자. 상품 추가 버튼 누를 시 호출
 	 */
 	public ItemDialog() {
 		this(null);
 	}
 
 	/**
-	 * 생성자. 회원 수정 버튼 누를 시 호출
+	 * 생성자. 상품 수정 버튼 누를 시 호출
 	 */
 	public ItemDialog(Item info) {
 

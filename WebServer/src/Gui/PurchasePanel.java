@@ -5,6 +5,7 @@ import java.text.SimpleDateFormat;
 import java.util.Vector;
 
 import javax.swing.JButton;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -13,6 +14,7 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 
 import Database.GetAllPurchase;
+import Elements.Ownership;
 import Elements.Purchase;
 
 public class PurchasePanel extends JPanel {
@@ -86,7 +88,7 @@ public class PurchasePanel extends JPanel {
 			table.getSelectionModel().clearSelection();
 			rowDatas.clear();
 			
-			// DB로 부터 coupon 읽어와서 추가
+			// DB로 부터 purchase 읽어와서 추가
 			for(Purchase purchase : GetAllPurchase.doAction()){
 				Vector<String> row = new Vector<String>();
 				row.add(purchase.getId());
@@ -113,6 +115,53 @@ public class PurchasePanel extends JPanel {
 			
 		}catch(SQLException e){
 			System.out.println("PurchasePanel.refresh()에서 예외 발생 : " + e.getMessage());
+		}
+	}
+
+	/**
+	 * 구매 추가 창을 띄움. "추가" 버튼에 의해 호출
+	 */
+	public void showAddPurchase() {
+
+		PurchaseDialog purchaseDialog = new PurchaseDialog();
+
+		// 확인 버튼을 누르면 추가 작업
+		if (purchaseDialog.isOk()) {
+			// 미완성
+		}
+	}
+
+	/**
+	 * 구매 수정 창을 띄움. "수정" 버튼에 의해 호출
+	 */
+	public void showModifyPurchase() {
+
+		Purchase purchase = new Purchase();
+
+		//
+		// DB로부터 정보를 받아 purchase에 받음 (incomplete)
+		//
+
+		// 다이얼로그 팝업
+		PurchaseDialog ownershipDialog = new PurchaseDialog(purchase);
+
+		// 확인 버튼을 누르면 수정 작업
+		if (ownershipDialog.isOk()) {
+			// 미완성
+		}
+	}
+
+	/**
+	 * 확인 여부를 묻고 선택한 구매를 삭제함. "삭제" 버튼에 의해 호출
+	 */
+	public void deletePurchase() {
+		int res = JOptionPane.showConfirmDialog(null, "Are you sure?",
+				"Delete", JOptionPane.OK_CANCEL_OPTION,
+				JOptionPane.INFORMATION_MESSAGE);
+
+		// 확인을 누르면 쿠폰 삭제
+		if (res == 0) {
+			// 미완성
 		}
 	}
 }

@@ -6,56 +6,57 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.SQLException;
 
-import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JSpinner;
+import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 
-import Database.GetAllCoupons;
+import Database.GetAllItems;
 import Database.GetAllMembers;
-import Database.InsertCoupon;
-import Database.InsertOwnership;
-import Elements.Coupon;
+import Elements.Item;
 import Elements.Member;
-import Elements.Ownership;
+import Elements.Purchase;
+import javax.swing.SpinnerNumberModel;
 
 /**
- * 소유 추가, 수정을 위한 다이얼로그 클래스
+ * 구매내역 추가, 수정을 위한 다이얼로그 클래스
  * 
  * @author Minji, Seongjun
- * @since 2015/5/7
- * @version 2015/5/7
+ * @since 2015/5/10
+ * @version 2015/5/10
  */
-public class OwnershipDialog extends JDialog {
+public class PurchaseDialog extends JDialog {
 
 	private final JPanel contentPanel = new JPanel(); // Default
 
 	private JComboBox<String> comboBoxId; 		// 아이디 콤보박스
-	private JComboBox<String> comboBoxCCode; 	// 쿠폰코드 콤보박스
-	private JComboBox<String> comboBoxUsed;		
+	private JComboBox<String> comboBoxICode; 	// 상품코드 콤보박스
+	private JSpinner spinnerCount;				// 구매수 스피너
+	private JTextField textFieldDate;			// 날짜 필드
 
 	private boolean ok = false; // 확인,취소 버튼 여부
 
 	/**
-	 * 생성자. 소유 추가 버튼 누를 시 호출
+	 * 생성자. 구매 추가 버튼 누를 시 호출
 	 */
-	public OwnershipDialog() {
+	public PurchaseDialog() {
 		this(null);
 	}
 
 	/**
-	 * 생성자. 소유 수정 버튼 누를 시 호출
+	 * 생성자. 구매 수정 버튼 누를 시 호출
 	 */
-	public OwnershipDialog(Ownership info) {
+	public PurchaseDialog(Purchase info) {
 
 		// 다이얼로그 속성 설정
-		setTitle("\uC18C\uC720 \uAD00\uB9AC");
+		setTitle("\uAD6C\uB9E4 \uAD00\uB9AC");
 		setModal(true);
-		setBounds(0, 0, 262, 148);
+		setBounds(0, 0, 262, 175);
 		setResizable(false);
 		setLocationRelativeTo(null);
 		setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
@@ -79,44 +80,54 @@ public class OwnershipDialog extends JDialog {
 				comboBoxId.addItem(member.getId());
 			}
 		} catch (SQLException e) {
-			System.out.println("OwnershipDialog()에서 예외 발생 : " + e.getMessage());
+			System.out.println("PurchaseDialog()에서 예외 발생 : " + e.getMessage());
 		}
 		comboBoxId.setSelectedIndex(0);
 		comboBoxId.setBounds(119, 7, 116, 21);
 		contentPanel.add(comboBoxId);
 
-		// 쿠폰코드 레이블
-		JLabel labelCCode = new JLabel("\uCFE0\uD3F0\uCF54\uB4DC :");
-		labelCCode.setHorizontalAlignment(SwingConstants.RIGHT);
-		labelCCode.setBounds(12, 35, 95, 15);
-		contentPanel.add(labelCCode);
+		// 상품코드 레이블
+		JLabel labelICode = new JLabel("\uC0C1\uD488\uCF54\uB4DC :");
+		labelICode.setHorizontalAlignment(SwingConstants.RIGHT);
+		labelICode.setBounds(12, 35, 95, 15);
+		contentPanel.add(labelICode);
 
-		// 쿠폰코드 콤보박스
-		comboBoxCCode = new JComboBox<String>();
+		// 상품코드 콤보박스
+		comboBoxICode = new JComboBox<String>();
 		try {
-			for (Coupon coupon : GetAllCoupons.doAction()) {
-				comboBoxCCode.addItem(coupon.getc_code());
+			for (Item item : GetAllItems.doAction()) {
+				comboBoxICode.addItem(item.geti_code());
 			}
 		} catch (SQLException e) {
-			System.out.println("OwnershipDialog()에서 예외 발생 : " + e.getMessage());
+			System.out.println("PurchaseDialog()에서 예외 발생 : " + e.getMessage());
 		}
-		comboBoxCCode.setSelectedIndex(0);
-		comboBoxCCode.setBounds(119, 32, 116, 21);
-		contentPanel.add(comboBoxCCode);
+		comboBoxICode.setSelectedIndex(0);
+		comboBoxICode.setBounds(119, 32, 116, 21);
+		contentPanel.add(comboBoxICode);
 
-		// 사용여부 레이블
-		JLabel labelUsed = new JLabel("\uC0AC\uC6A9\uC5EC\uBD80 :");
-		labelUsed.setHorizontalAlignment(SwingConstants.RIGHT);
-		labelUsed.setBounds(12, 60, 95, 15);
-		contentPanel.add(labelUsed);
-
-		// 사용여부 콤보박스
-		comboBoxUsed = new JComboBox<String>();
-		comboBoxUsed.setModel(new DefaultComboBoxModel(new String[] {
-				"사용함", "사용 안 함" }));
-		comboBoxUsed.setSelectedIndex(0);
-		comboBoxUsed.setBounds(119, 57, 116, 21);
-		contentPanel.add(comboBoxUsed);
+		// 구매수 레이블
+		JLabel labelCount = new JLabel("\uAD6C\uB9E4\uC218 :");
+		labelCount.setHorizontalAlignment(SwingConstants.RIGHT);
+		labelCount.setBounds(12, 60, 95, 15);
+		contentPanel.add(labelCount);
+		
+		// 구매수 스피너
+		spinnerCount = new JSpinner();
+		spinnerCount.setModel(new SpinnerNumberModel(new Integer(0), new Integer(0), null, new Integer(1)));
+		spinnerCount.setBounds(119, 57, 59, 22);
+		contentPanel.add(spinnerCount);
+		
+		// 날짜 레이블
+		JLabel labelDate = new JLabel("\uB0A0\uC9DC :");
+		labelDate.setHorizontalAlignment(SwingConstants.RIGHT);
+		labelDate.setBounds(12, 85, 95, 15);
+		contentPanel.add(labelDate);
+		
+		// 날짜 필드
+		textFieldDate = new JTextField();
+		textFieldDate.setColumns(10);
+		textFieldDate.setBounds(119, 82, 116, 21);
+		contentPanel.add(textFieldDate);
 
 		// 확인, 취소버튼 (Default)
 		{
@@ -149,19 +160,15 @@ public class OwnershipDialog extends JDialog {
 
 		// 받아온 정보를 필드에 설정
 		if (info != null) {
+			/*
 			comboBoxId.setSelectedItem(info.getId());
 			comboBoxCCode.setSelectedItem(info.getC_code());
 			comboBoxUsed.setSelectedItem(("t".equals(info.getUsed()) ? "사용함" : "사용 안 함"));
+			*/
 		}
 
 		// 창 보여줌.
-		setVisible(true);
-		
-		// DB에 insert
-		Ownership newownership = new Ownership();
-		newownership = getInfo();
-		InsertOwnership.insertownership(newownership);
-		
+		setVisible(true);		
 	}
 
 	/**
@@ -169,13 +176,14 @@ public class OwnershipDialog extends JDialog {
 	 * 
 	 * @return info
 	 */
-	public Ownership getInfo() {
-		Ownership info = new Ownership();
+	public Purchase getInfo() {
+		Purchase info = new Purchase();
 		
+		/*
 		info.setId((String) comboBoxId.getSelectedItem());
 		info.setC_code((String) comboBoxCCode.getSelectedItem());
 		info.setUsed(("사용함".equals((String) comboBoxUsed.getSelectedItem()) ? "t" : "f"));
-		
+		*/
 		return info;
 	}
 

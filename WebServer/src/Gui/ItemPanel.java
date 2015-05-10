@@ -132,7 +132,7 @@ public class ItemPanel extends JPanel {
 			table.getSelectionModel().clearSelection();
 			rowDatas.clear();
 			
-			// DB로 부터 coupon 읽어와서 추가
+			// DB로 부터 item 읽어와서 추가
 			for(Item item : GetAllItems.doAction()){
 				Vector<String> row = new Vector<String>();
 				row.add(item.geti_code());
