@@ -7,12 +7,14 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.ListSelectionModel;
 import javax.swing.SwingConstants;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.JButton;
+
 
 
 
@@ -106,6 +108,7 @@ public class ItemPanel extends JPanel {
 
 		// Å×ÀÌºí
 		table = new JTable(tableModel);
+		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		table.getTableHeader().setReorderingAllowed(false);
 		table.getTableHeader().setResizingAllowed(false);
 		table.getSelectionModel().addListSelectionListener(new ListSelectionListener() {

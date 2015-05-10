@@ -8,7 +8,10 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.ListSelectionModel;
 import javax.swing.SwingConstants;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 
@@ -96,8 +99,18 @@ public class OwnershipPanel extends JPanel {
 
 		// 테이블
 		table = new JTable(tableModel);
+		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		table.getTableHeader().setReorderingAllowed(false);
 		table.getTableHeader().setResizingAllowed(false);
+		table.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
+			// 레코드 하나 선택 시 "수정", "삭제" 버튼 활성화
+			@Override
+			public void valueChanged(ListSelectionEvent arg0) {				
+				boolean isSelected = table.getSelectedRowCount() > 0;
+				buttonModify.setEnabled(isSelected);
+				buttonDelete.setEnabled(isSelected);				
+			}
+		});
 		scrollPane.setViewportView(table);
 
 		// 모두 설정 후 테이블 새로고침

@@ -19,6 +19,8 @@ public class ModifyMember {
 	 *            primary key
 	 * @param member
 	 *            변경 데이터
+	 * @throws SQLException
+	 *             쿼리 실행 에러시 발생
 	 */
 	synchronized public static void doAction(String originId, Member member)
 			throws SQLException {
@@ -36,5 +38,8 @@ public class ModifyMember {
 		pstmt.setInt(7, member.getEnterCount());
 		pstmt.setString(8, originId);
 		pstmt.executeUpdate();
+		
+		// 커밋
+		DbConnector.getInstance().getConnection().commit();
 	}
 }

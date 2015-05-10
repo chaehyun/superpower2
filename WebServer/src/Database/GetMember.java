@@ -20,6 +20,8 @@ public class GetMember {
 	 * @param id
 	 *            primary key
 	 * @return 회원 객체 or null
+	 * @throws SQLException
+	 *             쿼리 실행 에러시 발생
 	 */
 	synchronized public static Member doAction(String id) throws SQLException{
 		

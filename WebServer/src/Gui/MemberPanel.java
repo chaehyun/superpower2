@@ -23,6 +23,7 @@ import Database.GetAllMembers;
 import Database.GetMember;
 import Database.ModifyMember;
 import Elements.Member;
+import javax.swing.ListSelectionModel;
 
 public class MemberPanel extends JPanel {
 
@@ -106,6 +107,7 @@ public class MemberPanel extends JPanel {
 
 		// 테이블
 		table = new JTable(tableModel);
+		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		table.getTableHeader().setReorderingAllowed(false);
 		table.getTableHeader().setResizingAllowed(false);
 		table.addMouseListener(new MouseAdapter() {
@@ -205,7 +207,6 @@ public class MemberPanel extends JPanel {
 
 			// 확인 버튼을 누르면 수정 작업
 			if (memberDialog.isOk()) {
-
 				ModifyMember.doAction(selectedId, memberDialog.getInfo());
 			}
 
@@ -215,8 +216,7 @@ public class MemberPanel extends JPanel {
 		}
 
 		// 화면 테이블 새로고침
-		refresh();
-		
+		refresh();		
 	}
 
 	/**
