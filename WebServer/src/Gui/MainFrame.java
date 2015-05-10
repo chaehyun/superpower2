@@ -57,6 +57,7 @@ public class MainFrame extends JFrame {
 	 * 생성자. 메인함수 수행시 호출됨.
 	 */
 	public MainFrame() {
+		setTitle("Super Power Server");
 		setResizable(false);
 
 		// 메인 프레임의 Swing 요소 설정

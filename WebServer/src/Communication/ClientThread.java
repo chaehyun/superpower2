@@ -125,7 +125,9 @@ public class ClientThread extends Thread {
 				this.clientSocket = null;
 			}
 
-			Login.setlogflag(this.id, false);
+			if(!"".equals(this.id)) {
+				Login.setlogflag(this.id, false);
+			}
 			
 		} catch (Exception e) {
 			System.out.println("ClientThread.stopClient()에서 예외 발생 : "
