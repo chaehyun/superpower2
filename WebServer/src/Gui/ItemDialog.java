@@ -216,11 +216,6 @@ public class ItemDialog extends JDialog {
 
 		// √¢ ∫∏ø©¡‹.
 		setVisible(true);
-
-		// DBø° insert
-		Item newitem = new Item();
-		newitem = getInfo();
-		InsertItem.insertitem(newitem);
 	}
 
 	/**

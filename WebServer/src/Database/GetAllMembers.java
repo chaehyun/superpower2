@@ -16,6 +16,12 @@ import Elements.Member;
  * @version 2015/5/4
  */
 public class GetAllMembers {
+
+	/**
+	 * @return 회원 리스트
+	 * @throws SQLException
+	 *             쿼리 실행 에러시 발생
+	 */
 	synchronized public static List<Member> doAction() throws SQLException {
 
 		// 쿼리 실행

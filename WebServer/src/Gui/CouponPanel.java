@@ -21,6 +21,7 @@ import javax.swing.table.DefaultTableModel;
 import Database.DeleteCoupon;
 import Database.GetAllCoupons;
 import Database.GetCoupon;
+import Database.InsertCoupon;
 import Database.ModifyCoupon;
 import Elements.Coupon;
 
@@ -168,12 +169,21 @@ public class CouponPanel extends JPanel {
 	 */
 	public void showAddCoupon() {
 
-		CouponDialog couponDialog = new CouponDialog();
+		try {
+			// 다이얼로그 팝업
+			CouponDialog couponDialog = new CouponDialog();
 
-		// 확인 버튼을 누르면 추가 작업
-		if (couponDialog.isOk()) {
-			// 미완성
+			// 확인 버튼을 누르면 추가 작업
+			if (couponDialog.isOk()) {
+				InsertCoupon.doAction(couponDialog.getInfo());
+			}
+		} catch (SQLException e) {
+			System.out.println("CouponPanel.showAddCoupon()에서 예외 발생 "
+					+ e.getMessage());
 		}
+
+		// 화면 테이블 새로고침
+		refresh();
 	}
 
 	/**

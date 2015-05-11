@@ -20,6 +20,9 @@ public class DeleteMember {
 	 */
 	synchronized public static void doAction(String id) throws SQLException {
 
+		// 坷配目乖 厚劝己拳
+		DbConnector.getInstance().getConnection().setAutoCommit(false);
+
 		// 孽府 角青
 		String sql = "delete from member where id=?";
 		PreparedStatement pstmt = DbConnector.getInstance().getConnection()
@@ -29,5 +32,6 @@ public class DeleteMember {
 
 		// 目乖
 		DbConnector.getInstance().getConnection().commit();
+		DbConnector.getInstance().getConnection().setAutoCommit(true);
 	}
 }

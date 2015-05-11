@@ -5,6 +5,9 @@ import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.SQLException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -13,6 +16,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JSpinner;
 import javax.swing.JTextField;
+import javax.swing.SpinnerNumberModel;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 
@@ -21,7 +25,6 @@ import Database.GetAllMembers;
 import Elements.Item;
 import Elements.Member;
 import Elements.Purchase;
-import javax.swing.SpinnerNumberModel;
 
 /**
  * 구매내역 추가, 수정을 위한 다이얼로그 클래스
@@ -34,10 +37,11 @@ public class PurchaseDialog extends JDialog {
 
 	private final JPanel contentPanel = new JPanel(); // Default
 
-	private JComboBox<String> comboBoxId; 		// 아이디 콤보박스
-	private JComboBox<String> comboBoxICode; 	// 상품코드 콤보박스
-	private JSpinner spinnerCount;				// 구매수 스피너
-	private JTextField textFieldDate;			// 날짜 필드
+	private JTextField textFieldCode; // 쿠폰코드 필드
+	private JComboBox<String> comboBoxId; // 아이디 콤보박스
+	private JComboBox<String> comboBoxICode; // 상품코드 콤보박스
+	private JSpinner spinnerCount; // 구매수 스피너
+	private JTextField textFieldDate; // 날짜 필드
 
 	private boolean ok = false; // 확인,취소 버튼 여부
 
@@ -56,7 +60,7 @@ public class PurchaseDialog extends JDialog {
 		// 다이얼로그 속성 설정
 		setTitle("\uAD6C\uB9E4 \uAD00\uB9AC");
 		setModal(true);
-		setBounds(0, 0, 262, 175);
+		setBounds(0, 0, 262, 196);
 		setResizable(false);
 		setLocationRelativeTo(null);
 		setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
@@ -67,10 +71,22 @@ public class PurchaseDialog extends JDialog {
 		getContentPane().add(contentPanel, BorderLayout.CENTER);
 		contentPanel.setLayout(null);
 
+		// 쿠폰코드 레이블
+		JLabel labelCode = new JLabel("\uCFE0\uD3F0\uCF54\uB4DC :");
+		labelCode.setHorizontalAlignment(SwingConstants.RIGHT);
+		labelCode.setBounds(12, 10, 95, 15);
+		contentPanel.add(labelCode);
+
+		// 쿠폰코드 필드
+		textFieldCode = new JTextField();
+		textFieldCode.setColumns(10);
+		textFieldCode.setBounds(119, 7, 116, 21);
+		contentPanel.add(textFieldCode);
+
 		// 아이디 레이블
 		JLabel labelId = new JLabel("ID :");
 		labelId.setHorizontalAlignment(SwingConstants.RIGHT);
-		labelId.setBounds(12, 10, 95, 15);
+		labelId.setBounds(12, 35, 95, 15);
 		contentPanel.add(labelId);
 
 		// 아이디 콤보박스
@@ -83,13 +99,13 @@ public class PurchaseDialog extends JDialog {
 			System.out.println("PurchaseDialog()에서 예외 발생 : " + e.getMessage());
 		}
 		comboBoxId.setSelectedIndex(0);
-		comboBoxId.setBounds(119, 7, 116, 21);
+		comboBoxId.setBounds(119, 32, 116, 21);
 		contentPanel.add(comboBoxId);
 
 		// 상품코드 레이블
 		JLabel labelICode = new JLabel("\uC0C1\uD488\uCF54\uB4DC :");
 		labelICode.setHorizontalAlignment(SwingConstants.RIGHT);
-		labelICode.setBounds(12, 35, 95, 15);
+		labelICode.setBounds(12, 60, 95, 15);
 		contentPanel.add(labelICode);
 
 		// 상품코드 콤보박스
@@ -102,31 +118,32 @@ public class PurchaseDialog extends JDialog {
 			System.out.println("PurchaseDialog()에서 예외 발생 : " + e.getMessage());
 		}
 		comboBoxICode.setSelectedIndex(0);
-		comboBoxICode.setBounds(119, 32, 116, 21);
+		comboBoxICode.setBounds(119, 57, 116, 21);
 		contentPanel.add(comboBoxICode);
 
 		// 구매수 레이블
 		JLabel labelCount = new JLabel("\uAD6C\uB9E4\uC218 :");
 		labelCount.setHorizontalAlignment(SwingConstants.RIGHT);
-		labelCount.setBounds(12, 60, 95, 15);
+		labelCount.setBounds(12, 85, 95, 15);
 		contentPanel.add(labelCount);
-		
+
 		// 구매수 스피너
 		spinnerCount = new JSpinner();
-		spinnerCount.setModel(new SpinnerNumberModel(new Integer(0), new Integer(0), null, new Integer(1)));
-		spinnerCount.setBounds(119, 57, 59, 22);
+		spinnerCount.setModel(new SpinnerNumberModel(new Integer(0),
+				new Integer(0), null, new Integer(1)));
+		spinnerCount.setBounds(119, 82, 59, 22);
 		contentPanel.add(spinnerCount);
-		
+
 		// 날짜 레이블
 		JLabel labelDate = new JLabel("\uB0A0\uC9DC :");
 		labelDate.setHorizontalAlignment(SwingConstants.RIGHT);
-		labelDate.setBounds(12, 85, 95, 15);
+		labelDate.setBounds(12, 110, 95, 15);
 		contentPanel.add(labelDate);
-		
+
 		// 날짜 필드
 		textFieldDate = new JTextField();
 		textFieldDate.setColumns(10);
-		textFieldDate.setBounds(119, 82, 116, 21);
+		textFieldDate.setBounds(119, 107, 116, 21);
 		contentPanel.add(textFieldDate);
 
 		// 확인, 취소버튼 (Default)
@@ -160,15 +177,16 @@ public class PurchaseDialog extends JDialog {
 
 		// 받아온 정보를 필드에 설정
 		if (info != null) {
-			/*
+			textFieldCode.setText(info.getP_code());
 			comboBoxId.setSelectedItem(info.getId());
-			comboBoxCCode.setSelectedItem(info.getC_code());
-			comboBoxUsed.setSelectedItem(("t".equals(info.getUsed()) ? "사용함" : "사용 안 함"));
-			*/
+			comboBoxICode.setSelectedItem(info.getI_code());
+			spinnerCount.setValue((Integer) info.getCount());
+			textFieldDate.setText(new SimpleDateFormat("yyyy-MM-dd")
+					.format(info.getPur_date()));
 		}
 
 		// 창 보여줌.
-		setVisible(true);		
+		setVisible(true);
 	}
 
 	/**
@@ -178,12 +196,18 @@ public class PurchaseDialog extends JDialog {
 	 */
 	public Purchase getInfo() {
 		Purchase info = new Purchase();
-		
-		/*
+		info.setP_code(textFieldCode.getText());
 		info.setId((String) comboBoxId.getSelectedItem());
-		info.setC_code((String) comboBoxCCode.getSelectedItem());
-		info.setUsed(("사용함".equals((String) comboBoxUsed.getSelectedItem()) ? "t" : "f"));
-		*/
+		info.setI_code((String) comboBoxICode.getSelectedItem());
+		info.setCount((Integer) spinnerCount.getValue());
+
+		try {
+			info.setPur_date(new SimpleDateFormat("yyyy-MM-dd")
+					.parse(textFieldDate.getText()));
+		} catch (ParseException e) {
+			info.setPur_date(new Date());
+		}
+
 		return info;
 	}
 

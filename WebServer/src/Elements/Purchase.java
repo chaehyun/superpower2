@@ -4,11 +4,15 @@ import java.util.Date;
 
 public class Purchase {
 	
+	private String p_code;
 	private String id;
 	private String i_code;
 	private int count;
 	private Date pur_date;
 
+	public String getP_code() {
+		return p_code;
+	}	
 	public String getId() {
 		return id;
 	}
@@ -20,6 +24,9 @@ public class Purchase {
 	}
 	public Date getPur_date() {
 		return pur_date;
+	}
+	public void setP_code(String p_code) {
+		this.p_code = p_code;
 	}
 	public void setId(String id) {
 		this.id = id;

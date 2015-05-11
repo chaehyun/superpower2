@@ -4,13 +4,13 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
 /**
- * 쿠폰 하나 삭제. PK인 쿠폰코드를 파라미터로 사용
+ * 구매 하나 삭제. PK인 구매코드를 파라미터로 사용
  * 
  * @author Seongjun
- * @since 2015/5/10
- * @version 2015/5/10
+ * @since 2015/5/11
+ * @version 2015/5/11
  */
-public class DeleteCoupon {
+public class DeletePurchase {
 
 	/**
 	 * @param code
@@ -22,14 +22,14 @@ public class DeleteCoupon {
 
 		// 오토커밋 비활성화
 		DbConnector.getInstance().getConnection().setAutoCommit(false);
-		
+
 		// 쿼리 실행
-		String sql = "delete from coupon where c_code=?";
+		String sql = "delete from purchase where p_code=?";
 		PreparedStatement pstmt = DbConnector.getInstance().getConnection()
 				.prepareStatement(sql);
 		pstmt.setString(1, code);
 		pstmt.executeUpdate();
-		
+
 		// 커밋
 		DbConnector.getInstance().getConnection().commit();
 		DbConnector.getInstance().getConnection().setAutoCommit(true);

@@ -156,12 +156,6 @@ public class OwnershipDialog extends JDialog {
 
 		// √¢ ∫∏ø©¡‹.
 		setVisible(true);
-		
-		// DBø° insert
-		Ownership newownership = new Ownership();
-		newownership = getInfo();
-		InsertOwnership.insertownership(newownership);
-		
 	}
 
 	/**

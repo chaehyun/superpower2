@@ -177,11 +177,6 @@ public class CouponDialog extends JDialog {
 		
 		// √¢ ∫∏ø©¡‹.
 		setVisible(true);
-		
-		// DBø° insert
-		Coupon newcoupon = new Coupon();
-		newcoupon = getInfo();
-		InsertCoupon.insertcoupon(newcoupon);
 	}
 	
 	/**

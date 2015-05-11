@@ -30,7 +30,7 @@ public class ClientThread extends Thread {
 
 	private BufferedReader bufferedReader;
 	private PrintWriter printWriter;
-	
+
 	private String id;
 
 	/**
@@ -78,7 +78,7 @@ public class ClientThread extends Thread {
 				case "req_login":
 					sendMsg = Login.logincheck(recvMsg.getString("ID"),
 							recvMsg.getString("Password"));
-					if(sendMsg.getBoolean("Result")) {
+					if (sendMsg.getBoolean("Result")) {
 						this.id = recvMsg.getString("ID");
 					}
 					break;
@@ -125,10 +125,10 @@ public class ClientThread extends Thread {
 				this.clientSocket = null;
 			}
 
-			if(!"".equals(this.id)) {
+			if (!"".equals(this.id)) {
 				Login.setlogflag(this.id, false);
 			}
-			
+
 		} catch (Exception e) {
 			System.out.println("ClientThread.stopClient()에서 예외 발생 : "
 					+ e.getMessage());

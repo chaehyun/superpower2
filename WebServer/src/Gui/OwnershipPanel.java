@@ -1,5 +1,7 @@
 package Gui;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.sql.SQLException;
 import java.util.Vector;
 
@@ -15,12 +17,12 @@ import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 
+import Database.DeleteOwnership;
 import Database.GetAllOwnership;
-import Elements.Coupon;
+import Database.GetOwnership;
+import Database.InsertOwnership;
+import Database.ModifyOwnership;
 import Elements.Ownership;
-
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
 
 public class OwnershipPanel extends JPanel {
 
@@ -102,15 +104,16 @@ public class OwnershipPanel extends JPanel {
 		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		table.getTableHeader().setReorderingAllowed(false);
 		table.getTableHeader().setResizingAllowed(false);
-		table.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
-			// 레코드 하나 선택 시 "수정", "삭제" 버튼 활성화
-			@Override
-			public void valueChanged(ListSelectionEvent arg0) {				
-				boolean isSelected = table.getSelectedRowCount() > 0;
-				buttonModify.setEnabled(isSelected);
-				buttonDelete.setEnabled(isSelected);				
-			}
-		});
+		table.getSelectionModel().addListSelectionListener(
+				new ListSelectionListener() {
+					// 레코드 하나 선택 시 "수정", "삭제" 버튼 활성화
+					@Override
+					public void valueChanged(ListSelectionEvent arg0) {
+						boolean isSelected = table.getSelectedRowCount() > 0;
+						buttonModify.setEnabled(isSelected);
+						buttonDelete.setEnabled(isSelected);
+					}
+				});
 		scrollPane.setViewportView(table);
 
 		// 모두 설정 후 테이블 새로고침
@@ -131,7 +134,7 @@ public class OwnershipPanel extends JPanel {
 				Vector<String> row = new Vector<String>();
 				row.add(ownership.getId());
 				row.add(ownership.getC_code());
-				row.add(ownership.getUsed());
+				row.add("t".equals(ownership.getUsed()) ? "사용함" : "사용 안 함");
 
 				rowDatas.add(row);
 			}
@@ -158,12 +161,21 @@ public class OwnershipPanel extends JPanel {
 	 */
 	public void showAddOwnership() {
 
-		OwnershipDialog ownershipDialog = new OwnershipDialog();
+		try {
+			// 다이얼로그 팝업
+			OwnershipDialog ownershipDialog = new OwnershipDialog();
 
-		// 확인 버튼을 누르면 추가 작업
-		if (ownershipDialog.isOk()) {
-			// 미완성
+			// 확인 버튼을 누르면 추가 작업
+			if (ownershipDialog.isOk()) {
+				InsertOwnership.doAction(ownershipDialog.getInfo());
+			}
+		} catch (SQLException e) {
+			System.out.println("OwnershipPanel.showAddOwnership()에서 예외 발생 "
+					+ e.getMessage());
 		}
+
+		// 화면 테이블 새로고침
+		refresh();
 	}
 
 	/**
@@ -171,19 +183,28 @@ public class OwnershipPanel extends JPanel {
 	 */
 	public void showModifyOwnership() {
 
-		Ownership ownership = new Ownership();
+		try {
 
-		//
-		// DB로부터 정보를 받아 ownership에 받음 (incomplete)
-		//
+			// 테이블에서 선택된 회원ID와 쿠폰코드
+			String selectedId = rowDatas.get(table.getSelectedRow()).get(0);
+			String selectedCode = rowDatas.get(table.getSelectedRow()).get(1);
 
-		// 다이얼로그 팝업
-		OwnershipDialog ownershipDialog = new OwnershipDialog(ownership);
+			// 다이얼로그 팝업
+			OwnershipDialog ownershipDialog = new OwnershipDialog(
+					GetOwnership.doAction(selectedId, selectedCode));
 
-		// 확인 버튼을 누르면 수정 작업
-		if (ownershipDialog.isOk()) {
-			// 미완성
+			// 확인 버튼을 누르면 수정 작업
+			if (ownershipDialog.isOk()) {
+				ModifyOwnership.doAction(selectedId, selectedCode,
+						ownershipDialog.getInfo());
+			}
+		} catch (SQLException e) {
+			System.out.println("OwnershipPanel.showModifyOwnership()에서 예외 발생 "
+					+ e.getMessage());
 		}
+
+		// 화면 테이블 새로고침
+		refresh();
 	}
 
 	/**
@@ -194,9 +215,25 @@ public class OwnershipPanel extends JPanel {
 				"Delete", JOptionPane.OK_CANCEL_OPTION,
 				JOptionPane.INFORMATION_MESSAGE);
 
-		// 확인을 누르면 쿠폰 삭제
+		// 확인을 누르면 소유 삭제
 		if (res == 0) {
-			// 미완성
+			try {
+				// 테이블에서 선택된 회원ID와 쿠폰코드
+				String selectedId = rowDatas.get(table.getSelectedRow()).get(0);
+				String selectedCode = rowDatas.get(table.getSelectedRow()).get(
+						1);
+
+				// 삭제 수행
+				DeleteOwnership.doAction(selectedId, selectedCode);
+
+			} catch (SQLException e) {
+				System.out
+						.println("OwnershipPanel.deleteOwnership()에서 예외 발생 : "
+								+ e.getMessage());
+			}
 		}
+
+		// 화면 테이블 새로고침
+		refresh();
 	}
 }

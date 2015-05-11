@@ -1,5 +1,7 @@
 package Gui;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.Vector;
@@ -16,12 +18,12 @@ import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 
+import Database.DeletePurchase;
 import Database.GetAllPurchase;
-import Elements.Ownership;
+import Database.GetPurchase;
+import Database.InsertPurchase;
+import Database.ModifyPurchase;
 import Elements.Purchase;
-
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
 
 public class PurchasePanel extends JPanel {
 
@@ -78,6 +80,7 @@ public class PurchasePanel extends JPanel {
 
 		// 칼럼 제목
 		Vector<String> columnName = new Vector<String>();
+		columnName.add("구매코드");
 		columnName.add("회원ID");
 		columnName.add("상품코드");
 		columnName.add("수량");
@@ -104,53 +107,55 @@ public class PurchasePanel extends JPanel {
 		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		table.getTableHeader().setReorderingAllowed(false);
 		table.getTableHeader().setResizingAllowed(false);
-		table.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
-			// 레코드 하나 선택 시 "수정", "삭제" 버튼 활성화
-			@Override
-			public void valueChanged(ListSelectionEvent arg0) {				
-				boolean isSelected = table.getSelectedRowCount() > 0;
-				buttonModify.setEnabled(isSelected);
-				buttonDelete.setEnabled(isSelected);				
-			}
-		});
+		table.getSelectionModel().addListSelectionListener(
+				new ListSelectionListener() {
+					// 레코드 하나 선택 시 "수정", "삭제" 버튼 활성화
+					@Override
+					public void valueChanged(ListSelectionEvent arg0) {
+						boolean isSelected = table.getSelectedRowCount() > 0;
+						buttonModify.setEnabled(isSelected);
+						buttonDelete.setEnabled(isSelected);
+					}
+				});
 		scrollPane.setViewportView(table);
 
 		refresh();
 	}
-	
-	public void refresh(){
-		try{
+
+	public void refresh() {
+		try {
 			// 기존 테이블 clear
 			table.getSelectionModel().clearSelection();
 			rowDatas.clear();
-			
+
 			// DB로 부터 purchase 읽어와서 추가
-			for(Purchase purchase : GetAllPurchase.doAction()){
+			for (Purchase purchase : GetAllPurchase.doAction()) {
 				Vector<String> row = new Vector<String>();
+				row.add(purchase.getP_code());
 				row.add(purchase.getId());
 				row.add(purchase.getI_code());
 				row.add(Integer.toString(purchase.getCount()));
-				
+
 				SimpleDateFormat date = new SimpleDateFormat("yyyy-MM-dd");
-				
 				row.add(date.format(purchase.getPur_date()));
-	
+
 				rowDatas.add(row);
 			}
-			
+
 			// 각 열을 가운데 정렬
 			DefaultTableCellRenderer renderer = new DefaultTableCellRenderer();
 			renderer.setHorizontalAlignment(SwingConstants.CENTER);
-			for(int i=0;i<table.getColumnCount();i++) {				
+			for (int i = 0; i < table.getColumnCount(); i++) {
 				table.getColumnModel().getColumn(i).setCellRenderer(renderer);
 			}
-						
+
 			// 테이블 그림 새로고침
 			table.setVisible(false);
 			table.setVisible(true);
-			
-		}catch(SQLException e){
-			System.out.println("PurchasePanel.refresh()에서 예외 발생 : " + e.getMessage());
+
+		} catch (SQLException e) {
+			System.out.println("PurchasePanel.refresh()에서 예외 발생 : "
+					+ e.getMessage());
 		}
 	}
 
@@ -159,12 +164,21 @@ public class PurchasePanel extends JPanel {
 	 */
 	public void showAddPurchase() {
 
-		PurchaseDialog purchaseDialog = new PurchaseDialog();
+		try {
+			// 다이얼로그 팝업
+			PurchaseDialog purchaseDialog = new PurchaseDialog();
 
-		// 확인 버튼을 누르면 추가 작업
-		if (purchaseDialog.isOk()) {
-			// 미완성
+			// 확인 버튼을 누르면 추가 작업
+			if (purchaseDialog.isOk()) {
+				InsertPurchase.doAction(purchaseDialog.getInfo());
+			}
+		} catch (SQLException e) {
+			System.out.println("PurchasePanel.showAddPurchase()에서 예외 발생 "
+					+ e.getMessage());
 		}
+
+		// 화면 테이블 새로고침
+		refresh();
 	}
 
 	/**
@@ -172,19 +186,26 @@ public class PurchasePanel extends JPanel {
 	 */
 	public void showModifyPurchase() {
 
-		Purchase purchase = new Purchase();
+		try {
 
-		//
-		// DB로부터 정보를 받아 purchase에 받음 (incomplete)
-		//
+			// 테이블에서 선택된 구매코드
+			String selectedCode = rowDatas.get(table.getSelectedRow()).get(0);
 
-		// 다이얼로그 팝업
-		PurchaseDialog ownershipDialog = new PurchaseDialog(purchase);
+			// 다이얼로그 팝업
+			PurchaseDialog purchaseDialog = new PurchaseDialog(
+					GetPurchase.doAction(selectedCode));
 
-		// 확인 버튼을 누르면 수정 작업
-		if (ownershipDialog.isOk()) {
-			// 미완성
+			// 확인 버튼을 누르면 수정 작업
+			if (purchaseDialog.isOk()) {
+				ModifyPurchase.doAction(selectedCode, purchaseDialog.getInfo());
+			}
+		} catch (SQLException e) {
+			System.out.println("PurchasePanel.showModifyPurchase()에서 예외 발생 "
+					+ e.getMessage());
 		}
+
+		// 화면 테이블 새로고침
+		refresh();
 	}
 
 	/**
@@ -195,9 +216,23 @@ public class PurchasePanel extends JPanel {
 				"Delete", JOptionPane.OK_CANCEL_OPTION,
 				JOptionPane.INFORMATION_MESSAGE);
 
-		// 확인을 누르면 쿠폰 삭제
+		// 확인을 누르면 구매 삭제
 		if (res == 0) {
-			// 미완성
+			try {
+				// 테이블에서 선택된 구매코드
+				String selectedCode = rowDatas.get(table.getSelectedRow()).get(
+						0);
+
+				// 삭제 수행
+				DeletePurchase.doAction(selectedCode);
+
+			} catch (SQLException e) {
+				System.out.println("PurchasePanel.deletePurchase()에서 예외 발생 : "
+						+ e.getMessage());
+			}
 		}
+
+		// 화면 테이블 새로고침
+		refresh();
 	}
 }

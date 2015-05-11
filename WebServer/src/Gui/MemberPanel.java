@@ -12,6 +12,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.ListSelectionModel;
 import javax.swing.SwingConstants;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
@@ -21,9 +22,9 @@ import javax.swing.table.DefaultTableModel;
 import Database.DeleteMember;
 import Database.GetAllMembers;
 import Database.GetMember;
+import Database.InsertMember;
 import Database.ModifyMember;
 import Elements.Member;
-import javax.swing.ListSelectionModel;
 
 public class MemberPanel extends JPanel {
 
@@ -183,12 +184,21 @@ public class MemberPanel extends JPanel {
 	 */
 	public void showAddMember() {
 
-		MemberDialog memberDialog = new MemberDialog();
+		try {
+			// 다이얼로그 팝업
+			MemberDialog memberDialog = new MemberDialog();
 
-		// 확인 버튼을 누르면 추가 작업
-		if (memberDialog.isOk()) {
-			// 미완성
+			// 확인 버튼을 누르면 추가 작업
+			if (memberDialog.isOk()) {
+				InsertMember.doAction(memberDialog.getInfo());
+			}
+		} catch (SQLException e) {
+			System.out.println("MemberPanel.showAddMember()에서 예외 발생 "
+					+ e.getMessage());
 		}
+		
+		// 화면 테이블 새로고침
+		refresh();
 	}
 
 	/**
@@ -216,7 +226,7 @@ public class MemberPanel extends JPanel {
 		}
 
 		// 화면 테이블 새로고침
-		refresh();		
+		refresh();
 	}
 
 	/**
