@@ -13,6 +13,7 @@ import javax.swing.border.EmptyBorder;
 
 import Communication.ServerThread;
 import Database.DbConnector;
+import Service.BestItem;
 
 /**
  * 메인프레임 클래스. 각 기능별 패널들을 담는 큰 틀.
@@ -105,6 +106,7 @@ public class MainFrame extends JFrame {
 		// 서버 시작
 		this.serverThread = new ServerThread();
 		this.serverThread.startServer();
+		
 	}
 
 	/**
