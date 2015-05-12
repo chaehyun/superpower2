@@ -80,6 +80,7 @@ public class ClientThread extends Thread {
 					sendlogin(recvMsg);
 					break;
 				case "req_best_list":
+					System.out.println("getrequest for best item");
 					sendbestitem();
 					break;
 				case "req_coupon_list":
@@ -153,6 +154,7 @@ public class ClientThread extends Thread {
 			JSONObject sendMsg = new JSONObject();
 			sendMsg = bestlist.get(i);
 			
+			System.out.println("send-> " + sendMsg.getString("Minor"));
 			this.printWriter.println(sendMsg.toString());
 			this.printWriter.flush();
 		}

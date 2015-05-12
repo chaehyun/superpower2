@@ -18,7 +18,7 @@ public class Login{
 		int count = 0;
 		
 		try{
-			String query = "select password, count, logflag from member where id = ?";	
+			String query = "select password, enter_count, logflag from member where id = ?";	
 			PreparedStatement pstmt = DbConnector.getInstance().getConnection().prepareStatement(query);
 			
 			pstmt.setString(1,  userid);
@@ -28,7 +28,7 @@ public class Login{
 			// userid 의 pwd와 count, flag읽어옴
 			while(rs.next()){
 				pwd = rs.getString("password");
-				count = rs.getInt("count");
+				count = rs.getInt("enter_count");
 				flag = rs.getString("logflag");
 			}
 			
@@ -46,7 +46,7 @@ public class Login{
 			}
 			// logflag와 count set
 			setlogflag(userid, true);
-			setcount(userid, count++);
+			setcount(userid, count+1);
 		}
 		else{
 			try {
@@ -94,7 +94,7 @@ public class Login{
 		try{
 			DbConnector.getInstance().getConnection().setAutoCommit(false);
 			
-			String query = "update member set count = ? where id = ?";
+			String query = "update member set enter_count = ? where id = ?";
 			PreparedStatement pstmt = DbConnector.getInstance().getConnection().prepareStatement(query);
 			pstmt.setInt(1,  count);
 			pstmt.setString(2,  userid);

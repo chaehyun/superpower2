@@ -31,6 +31,7 @@ public class BestItem {
 				best.put("MessageType", "res_best_list");
 				best.put("Minor", itemList.get(i).getminor());
 				best.put("Price", itemList.get(i).getprice());
+				best.put("Image", ImageManager.getStringFromImageFile(itemList.get(i).getimage()));
 				// 
 				//
 				// 이미지 넣을 부분
