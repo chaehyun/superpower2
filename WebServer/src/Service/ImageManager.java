@@ -1,8 +1,8 @@
 package Service;
 
-import java.io.DataInputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.util.Base64;
 
 /**
  * 이미지 파일 관리자.
@@ -13,25 +13,31 @@ import java.io.FileInputStream;
  */
 public class ImageManager {
 
-	public static String getStringFromBitmapFile(String filePath) {
+	/**
+	 * 이미지파일을 바이트로 변환후, 이것을 또 스트링으로 변환하여 반환.
+	 * 
+	 * @param filePath
+	 *            이미지파일 경로
+	 * @return 이미지 스트링
+	 */
+	public static String getStringFromImageFile(String filePath) {
 
 		String fileString = null;
 
 		try {
 			// 파일 스트림 설정
 			File file = new File(filePath);
-			DataInputStream dataInputStream = new DataInputStream(
-					new FileInputStream(file));
+			FileInputStream fis = new FileInputStream(file);
 
 			// 파일 읽음
 			byte[] bytes = new byte[(int) file.length()];
-			dataInputStream.read(bytes, 0, bytes.length);
+			fis.read(bytes);
 
 			// byte array to String
-			fileString = new String(bytes);
+			fileString = Base64.getEncoder().encodeToString(bytes);
 
 			// 파일 스트림 닫음
-			dataInputStream.close();
+			fis.close();
 
 		} catch (Exception e) {
 			return null;
