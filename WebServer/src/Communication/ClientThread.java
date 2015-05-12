@@ -7,10 +7,13 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import Service.BestItem;
 import Service.Login;
 
 /**
@@ -71,26 +74,17 @@ public class ClientThread extends Thread {
 					break;
 				}
 				JSONObject recvMsg = new JSONObject(line);
-
-				// 메시지 타입별로 서비스 후 결과를 sendMsg로 보낼 준비
-				JSONObject sendMsg = null;
+				
 				switch (recvMsg.getString("MessageType")) {
 				case "req_login":
-					sendMsg = Login.logincheck(recvMsg.getString("ID"),
-							recvMsg.getString("Password"));
-					if (sendMsg.getBoolean("Result")) {
-						this.id = recvMsg.getString("ID");
-					}
+					sendlogin(recvMsg);
 					break;
 				case "req_best_list":
+					sendbestitem();
 					break;
 				case "req_coupon_list":
 					break;
 				}
-
-				// 결과 JSON을 클라이언트로 보냄
-				this.printWriter.println(sendMsg.toString());
-				this.printWriter.flush();
 			}
 		} catch (IOException | JSONException e) {
 		}
@@ -133,5 +127,35 @@ public class ClientThread extends Thread {
 			System.out.println("ClientThread.stopClient()에서 예외 발생 : "
 					+ e.getMessage());
 		}
+	}
+	
+	public void sendlogin(JSONObject recvMsg) throws JSONException{
+		
+		JSONObject sendMsg = new JSONObject();
+		
+		sendMsg = Login.logincheck(recvMsg.getString("ID"),
+				recvMsg.getString("Password"));
+		if (sendMsg.getBoolean("Result")) {
+			this.id = recvMsg.getString("ID");
+		}
+
+		// 결과 JSON을 클라이언트로 보냄
+		this.printWriter.println(sendMsg.toString());
+		this.printWriter.flush();
+	}
+	
+	public void sendbestitem() throws JSONException{
+		
+		List<JSONObject> bestlist = new ArrayList<JSONObject>();
+		bestlist = BestItem.getBestItems();
+		
+		for(int i=0; i<10; i++){
+			JSONObject sendMsg = new JSONObject();
+			sendMsg = bestlist.get(i);
+			
+			this.printWriter.println(sendMsg.toString());
+			this.printWriter.flush();
+		}
+		
 	}
 }
