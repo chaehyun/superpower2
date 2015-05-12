@@ -3,10 +3,10 @@ package Communication;
 import java.io.BufferedReader;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
-import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,6 +15,7 @@ import org.json.JSONObject;
 
 import Service.BestItem;
 import Service.Login;
+import Service.ShowCoupon;
 
 /**
  * 클라이언트에게 서비스를 제공하는 스레드 클래스.
@@ -74,7 +75,7 @@ public class ClientThread extends Thread {
 					break;
 				}
 				JSONObject recvMsg = new JSONObject(line);
-				
+
 				switch (recvMsg.getString("MessageType")) {
 				case "req_login":
 					sendlogin(recvMsg);
@@ -87,7 +88,7 @@ public class ClientThread extends Thread {
 					break;
 				}
 			}
-		} catch (IOException | JSONException e) {
+		} catch (Exception e) {
 		}
 
 		// 클라이언트 종료 및 서버에서 리스트로부터 제거됨.
@@ -129,11 +130,11 @@ public class ClientThread extends Thread {
 					+ e.getMessage());
 		}
 	}
-	
-	public void sendlogin(JSONObject recvMsg) throws JSONException{
-		
+
+	public void sendlogin(JSONObject recvMsg) throws JSONException {
+
 		JSONObject sendMsg = new JSONObject();
-		
+
 		sendMsg = Login.logincheck(recvMsg.getString("ID"),
 				recvMsg.getString("Password"));
 		if (sendMsg.getBoolean("Result")) {
@@ -144,20 +145,45 @@ public class ClientThread extends Thread {
 		this.printWriter.println(sendMsg.toString());
 		this.printWriter.flush();
 	}
-	
-	public void sendbestitem() throws JSONException{
-		
+
+	public void sendbestitem() throws JSONException {
+
 		List<JSONObject> bestlist = new ArrayList<JSONObject>();
 		bestlist = BestItem.getBestItems();
-		
-		for(int i=0; i<10; i++){
+
+		for (int i = 0; i < 10; i++) {
 			JSONObject sendMsg = new JSONObject();
 			sendMsg = bestlist.get(i);
-			
+
 			System.out.println("send-> " + sendMsg.getString("Minor"));
 			this.printWriter.println(sendMsg.toString());
 			this.printWriter.flush();
 		}
-		
+	}
+
+	/**
+	 * 해당 회원의 쿠폰리스트를 보냄
+	 * 
+	 * @param recvMsg
+	 * @throws JSONException
+	 * @throws SQLException
+	 */
+	public void sendCouponList(JSONObject recvMsg) throws Exception {
+
+		// 해당 회원의 쿠폰 수를 구함
+		this.printWriter.println(ShowCoupon.getCouponCount(this.id));
+		this.printWriter.flush();
+ 
+		// ACK를 받음. 수신실패하거나 헤더가 다를경우 예외발생
+		String ack = this.bufferedReader.readLine();
+		if (ack == null
+				|| !(new JSONObject(ack).getString("MessageType")
+						.equals("req_coupon_list_ack"))) {
+			throw new Exception();
+		}
+
+		// 해당 회원이 소유하는 쿠폰 데이터 덩어리를 소켓으로 보냄
+		this.printWriter.println(ShowCoupon.getCoupons(this.id));
+		this.printWriter.flush();
 	}
 }
