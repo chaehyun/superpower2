@@ -31,6 +31,7 @@ public class UpdateFavorite {
 			// major °ª ¹Þ¾Æ¿È
 			major = Getmajorid
 					.getmajor(personalpurchaselist.get(i).getI_code());
+			
 			System.out.println(major);
 
 			// major id·Î count Áõ°¡½ÃÅ´

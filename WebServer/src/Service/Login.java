@@ -42,7 +42,7 @@ public class Login{
 			try {
 				response.put("MessageType", "res_login");
 				response.put("Result", true);
-				UpdateFavorite.givecoupon(userid);
+				// UpdateFavorite.givecoupon(userid);
 			} catch (JSONException e) {
 				e.printStackTrace();
 			}
@@ -83,6 +83,8 @@ public class Login{
 			int result = pstmt.executeUpdate();
 			DbConnector.getInstance().getConnection().commit();
 			DbConnector.getInstance().getConnection().setAutoCommit(true);
+			
+			//UpdateFavorite.givecoupon(userid);
 			
 		}catch(Exception e){
 			System.err.println("sql error = " + e.getMessage());
