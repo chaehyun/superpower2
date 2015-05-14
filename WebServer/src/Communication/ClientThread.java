@@ -14,7 +14,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import Service.BestItem;
-import Service.GivePersonalCoupon;
 import Service.Login;
 import Service.ShowCoupons;
 import Service.UseCoupon;
@@ -81,8 +80,6 @@ public class ClientThread extends Thread {
 				switch (recvMsg.getString("MessageType")) {
 				case "req_login":
 					sendlogin(recvMsg);
-					JSONObject temp = new JSONObject();
-					temp = GivePersonalCoupon.givecoupon(recvMsg.getString("ID"));
 					break;
 				case "req_best_list":
 					System.out.println("getrequest for best item");
@@ -95,10 +92,6 @@ public class ClientThread extends Thread {
 					break;
 				}
 			}
-		} catch (IOException | JSONException e) {
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
 		} catch (Exception e) {
 		}
 
