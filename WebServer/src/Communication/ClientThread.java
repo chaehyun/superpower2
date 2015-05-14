@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,6 +15,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import Service.BestItem;
+import Service.GivePersonalCoupon;
 import Service.Login;
 
 /**
@@ -78,6 +80,8 @@ public class ClientThread extends Thread {
 				switch (recvMsg.getString("MessageType")) {
 				case "req_login":
 					sendlogin(recvMsg);
+					JSONObject temp = new JSONObject();
+					temp = GivePersonalCoupon.givecoupon(recvMsg.getString("ID"));
 					break;
 				case "req_best_list":
 					System.out.println("getrequest for best item");
@@ -88,6 +92,9 @@ public class ClientThread extends Thread {
 				}
 			}
 		} catch (IOException | JSONException e) {
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 
 		// 클라이언트 종료 및 서버에서 리스트로부터 제거됨.
