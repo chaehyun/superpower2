@@ -22,7 +22,7 @@ public class GetCoupon {
 	 * @throws SQLException
 	 *             쿼리 실행 에러시 발생
 	 */
-	synchronized public static Coupon doAction(String code) throws SQLException {
+	public static Coupon doAction(String code) throws SQLException {
 
 		// DTO
 		Coupon coupon = null;

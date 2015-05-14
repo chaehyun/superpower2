@@ -14,7 +14,7 @@ public class ResetLogFlag {
 	/**
 	 * 로그인 여부 모두 초기화. 프로그램 시작시 호출됨.
 	 */
-	synchronized public static void doAction() throws SQLException {
+	public static void doAction() throws SQLException {
 
 		// 오토커밋 비활성화
 		DbConnector.getInstance().getConnection().setAutoCommit(false);

@@ -23,7 +23,7 @@ public class GetMember {
 	 * @throws SQLException
 	 *             쿼리 실행 에러시 발생
 	 */
-	synchronized public static Member doAction(String id) throws SQLException{
+	public static Member doAction(String id) throws SQLException{
 		
 		// DTO
 		Member member = null;

@@ -9,7 +9,7 @@ import Elements.Ownership;
 
 public class GetPersonalCoupon {
 	
-	synchronized public static List<Ownership> doAction(String userid) {
+	public static List<Ownership> doAction(String userid) {
 		
 		List<Ownership> personalownershiplist = new ArrayList<Ownership>();
 		try {

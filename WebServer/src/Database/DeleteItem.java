@@ -18,7 +18,7 @@ public class DeleteItem {
 	 * @throws SQLException
 	 *             쿼리 실행 에러시 발생
 	 */
-	synchronized public static void doAction(String code) throws SQLException {
+	public static void doAction(String code) throws SQLException {
 
 		// 오토커밋 비활성화
 		DbConnector.getInstance().getConnection().setAutoCommit(false);

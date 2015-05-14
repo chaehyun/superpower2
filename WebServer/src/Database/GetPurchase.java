@@ -22,7 +22,7 @@ public class GetPurchase {
 	 * @throws SQLException
 	 *             쿼리 실행 에러시 발생
 	 */
-	synchronized public static Purchase doAction(String code)
+	public static Purchase doAction(String code)
 			throws SQLException {
 
 		// DTO

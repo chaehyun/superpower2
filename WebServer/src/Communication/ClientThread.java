@@ -3,7 +3,6 @@ package Communication;
 import java.io.BufferedReader;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
-import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
@@ -17,13 +16,15 @@ import org.json.JSONObject;
 import Service.BestItem;
 import Service.GivePersonalCoupon;
 import Service.Login;
+import Service.ShowCoupons;
+import Service.UseCoupon;
 
 /**
  * 클라이언트에게 서비스를 제공하는 스레드 클래스.
  * 
  * @author Minji, Seongjun
  * @since 2015/5/1
- * @version 2015/5/7
+ * @version 2015/5/14
  */
 public class ClientThread extends Thread {
 
@@ -76,7 +77,7 @@ public class ClientThread extends Thread {
 					break;
 				}
 				JSONObject recvMsg = new JSONObject(line);
-				
+
 				switch (recvMsg.getString("MessageType")) {
 				case "req_login":
 					sendlogin(recvMsg);
@@ -88,6 +89,9 @@ public class ClientThread extends Thread {
 					sendbestitem();
 					break;
 				case "req_coupon_list":
+					sendCouponList(recvMsg);
+					break;
+				case "req_coupon_use":
 					break;
 				}
 			}
@@ -95,6 +99,7 @@ public class ClientThread extends Thread {
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		} catch (Exception e) {
 		}
 
 		// 클라이언트 종료 및 서버에서 리스트로부터 제거됨.
@@ -136,11 +141,17 @@ public class ClientThread extends Thread {
 					+ e.getMessage());
 		}
 	}
-	
-	public void sendlogin(JSONObject recvMsg) throws JSONException{
-		
+
+	/**
+	 * 로그인 체크한 결과를 보냄.
+	 * 
+	 * @param recvMsg
+	 * @throws JSONException
+	 */
+	public void sendlogin(JSONObject recvMsg) throws JSONException {
+
 		JSONObject sendMsg = new JSONObject();
-		
+
 		sendMsg = Login.logincheck(recvMsg.getString("ID"),
 				recvMsg.getString("Password"));
 		if (sendMsg.getBoolean("Result")) {
@@ -151,20 +162,65 @@ public class ClientThread extends Thread {
 		this.printWriter.println(sendMsg.toString());
 		this.printWriter.flush();
 	}
-	
-	public void sendbestitem() throws JSONException{
-		
+
+	/**
+	 * 베스트 상품 목록을 보냄
+	 * 
+	 * @throws JSONException
+	 */
+	public void sendbestitem() throws JSONException {
+
 		List<JSONObject> bestlist = new ArrayList<JSONObject>();
 		bestlist = BestItem.getBestItems();
-		
-		for(int i=0; i<10; i++){
+
+		for (int i = 0; i < 10; i++) {
 			JSONObject sendMsg = new JSONObject();
 			sendMsg = bestlist.get(i);
-			
-			System.out.println("send-> " + sendMsg.getString("Minor"));
+
 			this.printWriter.println(sendMsg.toString());
 			this.printWriter.flush();
 		}
-		
+	}
+
+	/**
+	 * 해당 회원의 쿠폰리스트를 보냄
+	 * 
+	 * @param recvMsg
+	 * @throws JSONException
+	 * @throws SQLException
+	 */
+	public void sendCouponList(JSONObject recvMsg) throws Exception {
+
+		// 해당 회원의 쿠폰 수를 구함
+		this.printWriter.println(ShowCoupons.getCouponCount(this.id));
+		this.printWriter.flush();
+
+		// ACK를 받음. 수신실패하거나 헤더가 다를경우 예외발생
+		String ack = this.bufferedReader.readLine();
+		if (ack == null
+				|| !(new JSONObject(ack).getString("MessageType")
+						.equals("req_coupon_list_ack"))) {
+			throw new Exception("failed to receive ACK");
+		}
+
+		// 해당 회원이 소유하는 쿠폰 데이터 덩어리를 소켓으로 보냄
+		this.printWriter.println(ShowCoupons.getCoupons(this.id));
+		this.printWriter.flush();
+	}
+
+	/**
+	 * 해당회원이 소유하는 쿠폰중 하나를 사용하고 그 결과를 반환함.
+	 * 
+	 * @param recvMsg
+	 * @throws SQLException
+	 * @throws JSONException
+	 */
+	public void sendUseCoupon(JSONObject recvMsg) throws SQLException,
+			JSONException {
+
+		// 사용 결과 JSON을 클라이언트로 보냄
+		this.printWriter.println(UseCoupon.use(this.id,
+				recvMsg.getString("Code")));
+		this.printWriter.flush();
 	}
 }

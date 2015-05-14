@@ -22,7 +22,7 @@ public class GetAllCoupons {
 	 * @throws SQLException
 	 *             쿼리 실행 에러시 발생
 	 */
-	synchronized public static List<Coupon> doAction() throws SQLException {
+	public static List<Coupon> doAction() throws SQLException {
 
 		// 쿼리 실행
 		String sql = "select * from coupon";

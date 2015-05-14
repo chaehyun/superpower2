@@ -22,7 +22,7 @@ public class ModifyItem {
 	 * @throws SQLException
 	 *             쿼리 실행 에러시 발생
 	 */
-	synchronized public static void doAction(String originCode, Item item)
+	public static void doAction(String originCode, Item item)
 			throws SQLException {
 
 		// 오토커밋 비활성화
