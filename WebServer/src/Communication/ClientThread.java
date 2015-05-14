@@ -16,6 +16,7 @@ import org.json.JSONObject;
 import Service.BestItem;
 import Service.Login;
 import Service.ShowCoupons;
+import Service.UseCoupon;
 
 /**
  * 클라이언트에게 서비스를 제공하는 스레드 클래스.
@@ -85,6 +86,9 @@ public class ClientThread extends Thread {
 					sendbestitem();
 					break;
 				case "req_coupon_list":
+					sendCouponList(recvMsg);
+					break;
+				case "req_coupon_use":
 					break;
 				}
 			}
@@ -183,7 +187,7 @@ public class ClientThread extends Thread {
 		// 해당 회원의 쿠폰 수를 구함
 		this.printWriter.println(ShowCoupons.getCouponCount(this.id));
 		this.printWriter.flush();
- 
+
 		// ACK를 받음. 수신실패하거나 헤더가 다를경우 예외발생
 		String ack = this.bufferedReader.readLine();
 		if (ack == null
@@ -194,6 +198,22 @@ public class ClientThread extends Thread {
 
 		// 해당 회원이 소유하는 쿠폰 데이터 덩어리를 소켓으로 보냄
 		this.printWriter.println(ShowCoupons.getCoupons(this.id));
+		this.printWriter.flush();
+	}
+
+	/**
+	 * 해당회원이 소유하는 쿠폰중 하나를 사용하고 그 결과를 반환함.
+	 * 
+	 * @param recvMsg
+	 * @throws SQLException
+	 * @throws JSONException
+	 */
+	public void sendUseCoupon(JSONObject recvMsg) throws SQLException,
+			JSONException {
+
+		// 사용 결과 JSON을 클라이언트로 보냄
+		this.printWriter.println(UseCoupon.use(this.id,
+				recvMsg.getString("Code")));
 		this.printWriter.flush();
 	}
 }
