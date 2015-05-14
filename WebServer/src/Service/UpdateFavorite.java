@@ -7,8 +7,6 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-import org.json.JSONObject;
-
 import Database.DbConnector;
 import Database.GetPersonalItem;
 import Database.Getmajorid;

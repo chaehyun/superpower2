@@ -1,6 +1,7 @@
 package Service;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -9,7 +10,7 @@ import Database.DbConnector;
 
 public class Login{
 	
-	public static JSONObject logincheck(String userid, String userpwd){
+	public static JSONObject logincheck(String userid, String userpwd) throws SQLException{
 		
 		JSONObject response = new JSONObject();
 		
@@ -41,6 +42,7 @@ public class Login{
 			try {
 				response.put("MessageType", "res_login");
 				response.put("Result", true);
+				UpdateFavorite.givecoupon(userid);
 			} catch (JSONException e) {
 				e.printStackTrace();
 			}

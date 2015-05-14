@@ -16,6 +16,7 @@ import org.json.JSONObject;
 import Service.BestItem;
 import Service.Login;
 import Service.ShowCoupons;
+import Service.UpdateFavorite;
 import Service.UseCoupon;
 
 /**
@@ -140,8 +141,9 @@ public class ClientThread extends Thread {
 	 * 
 	 * @param recvMsg
 	 * @throws JSONException
+	 * @throws SQLException 
 	 */
-	public void sendlogin(JSONObject recvMsg) throws JSONException {
+	public void sendlogin(JSONObject recvMsg) throws JSONException, SQLException {
 
 		JSONObject sendMsg = new JSONObject();
 
