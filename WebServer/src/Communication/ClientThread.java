@@ -15,7 +15,7 @@ import org.json.JSONObject;
 
 import Service.BestItem;
 import Service.Login;
-import Service.ShowCoupon;
+import Service.ShowCoupons;
 
 /**
  * 클라이언트에게 서비스를 제공하는 스레드 클래스.
@@ -181,7 +181,7 @@ public class ClientThread extends Thread {
 	public void sendCouponList(JSONObject recvMsg) throws Exception {
 
 		// 해당 회원의 쿠폰 수를 구함
-		this.printWriter.println(ShowCoupon.getCouponCount(this.id));
+		this.printWriter.println(ShowCoupons.getCouponCount(this.id));
 		this.printWriter.flush();
  
 		// ACK를 받음. 수신실패하거나 헤더가 다를경우 예외발생
@@ -193,7 +193,7 @@ public class ClientThread extends Thread {
 		}
 
 		// 해당 회원이 소유하는 쿠폰 데이터 덩어리를 소켓으로 보냄
-		this.printWriter.println(ShowCoupon.getCoupons(this.id));
+		this.printWriter.println(ShowCoupons.getCoupons(this.id));
 		this.printWriter.flush();
 	}
 }

@@ -19,9 +19,9 @@ import Elements.Ownership;
  * 
  * @author Seongjun, Minji
  * @since 2015/5/12
- * @version 2015/5/12
+ * @version 2015/5/14
  */
-public class ShowCoupon {
+public class ShowCoupons {
 
 	/**
 	 * 
