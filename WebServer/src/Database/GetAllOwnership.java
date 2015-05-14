@@ -22,7 +22,7 @@ public class GetAllOwnership {
 	 * @throws SQLException
 	 *             쿼리 실행 에러시 발생
 	 */
-	synchronized public static List<Ownership> doAction() throws SQLException {
+	public static List<Ownership> doAction() throws SQLException {
 
 		// 쿼리 실행
 		String sql = "select * from ownership";

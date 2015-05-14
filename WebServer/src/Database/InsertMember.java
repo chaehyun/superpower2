@@ -20,7 +20,7 @@ public class InsertMember {
 	 * @throws SQLException
 	 *             쿼리 실행 에러시 발생
 	 */
-	synchronized public static void doAction(Member member) throws SQLException {
+	public static void doAction(Member member) throws SQLException {
 
 		// 오토커밋 비활성화
 		DbConnector.getInstance().getConnection().setAutoCommit(false);

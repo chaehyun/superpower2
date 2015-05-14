@@ -8,7 +8,7 @@ import java.util.List;
 import Elements.Purchase;
 
 public class GetPersonalItem {
-	synchronized public static List<Purchase> doAction(String userid) {
+	public static List<Purchase> doAction(String userid) {
 
 		List<Purchase> personalpurchaselist = new ArrayList<Purchase>();
 		try {

@@ -22,7 +22,7 @@ public class ModifyMember {
 	 * @throws SQLException
 	 *             쿼리 실행 에러시 발생
 	 */
-	synchronized public static void doAction(String originId, Member member)
+	public static void doAction(String originId, Member member)
 			throws SQLException {
 		
 		// 오토커밋 비활성화

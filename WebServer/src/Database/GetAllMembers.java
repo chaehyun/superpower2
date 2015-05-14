@@ -22,7 +22,7 @@ public class GetAllMembers {
 	 * @throws SQLException
 	 *             쿼리 실행 에러시 발생
 	 */
-	synchronized public static List<Member> doAction() throws SQLException {
+	public static List<Member> doAction() throws SQLException {
 
 		// 쿼리 실행
 		String sql = "select * from member";

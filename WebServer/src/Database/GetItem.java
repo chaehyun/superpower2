@@ -22,7 +22,7 @@ public class GetItem {
 	 * @throws SQLException
 	 *             쿼리 실행 에러시 발생
 	 */
-	synchronized public static Item doAction(String code) throws SQLException {
+	public static Item doAction(String code) throws SQLException {
 
 		// DTO
 		Item item = null;

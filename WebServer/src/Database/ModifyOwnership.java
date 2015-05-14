@@ -24,7 +24,7 @@ public class ModifyOwnership {
 	 * @throws SQLException
 	 *             쿼리 실행 에러시 발생
 	 */
-	synchronized public static void doAction(String originId,
+	public static void doAction(String originId,
 			String originCCode, Ownership ownership) throws SQLException {
 
 		// 오토커밋 비활성화

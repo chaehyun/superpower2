@@ -24,7 +24,7 @@ public class GetOwnership {
 	 * @throws SQLException
 	 *             쿼리 실행 에러시 발생
 	 */
-	synchronized public static Ownership doAction(String id, String cCode)
+	public static Ownership doAction(String id, String cCode)
 			throws SQLException {
 
 		// DTO

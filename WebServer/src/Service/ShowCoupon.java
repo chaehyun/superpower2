@@ -30,7 +30,7 @@ public class ShowCoupon {
 	 * @throws SQLException
 	 * @throws JSONException
 	 */
-	synchronized public static JSONObject getCouponCount(String id) throws SQLException, JSONException {
+	public static JSONObject getCouponCount(String id) throws SQLException, JSONException {
 
 		// 해당 회원ID의 소유 쿠폰 수 카운트
 		int count = 0;

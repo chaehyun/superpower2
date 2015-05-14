@@ -22,7 +22,7 @@ import Service.ShowCoupon;
  * 
  * @author Minji, Seongjun
  * @since 2015/5/1
- * @version 2015/5/7
+ * @version 2015/5/14
  */
 public class ClientThread extends Thread {
 
@@ -131,6 +131,12 @@ public class ClientThread extends Thread {
 		}
 	}
 
+	/**
+	 * 로그인 체크한 결과를 보냄.
+	 * 
+	 * @param recvMsg
+	 * @throws JSONException
+	 */
 	public void sendlogin(JSONObject recvMsg) throws JSONException {
 
 		JSONObject sendMsg = new JSONObject();
@@ -146,6 +152,11 @@ public class ClientThread extends Thread {
 		this.printWriter.flush();
 	}
 
+	/**
+	 * 베스트 상품 목록을 보냄
+	 * 
+	 * @throws JSONException
+	 */
 	public void sendbestitem() throws JSONException {
 
 		List<JSONObject> bestlist = new ArrayList<JSONObject>();
@@ -155,7 +166,6 @@ public class ClientThread extends Thread {
 			JSONObject sendMsg = new JSONObject();
 			sendMsg = bestlist.get(i);
 
-			System.out.println("send-> " + sendMsg.getString("Minor"));
 			this.printWriter.println(sendMsg.toString());
 			this.printWriter.flush();
 		}
@@ -179,7 +189,7 @@ public class ClientThread extends Thread {
 		if (ack == null
 				|| !(new JSONObject(ack).getString("MessageType")
 						.equals("req_coupon_list_ack"))) {
-			throw new Exception();
+			throw new Exception("failed to receive ACK");
 		}
 
 		// 해당 회원이 소유하는 쿠폰 데이터 덩어리를 소켓으로 보냄
