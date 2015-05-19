@@ -11,14 +11,22 @@ import java.util.Random;
 import Elements.Coupon;
 
 /**
- * 쿠폰을 자동으로 만들어줌. 맞춤형 쿠폰을 줄때 마땅한게 없을 때 생성함.
+ * 쿠폰을 자동으로 만들어줌. 맞춤형 쿠폰을 줄때 마땅한게 없을 때 호출됨.
+ * 우선 새 쿠폰코드(String)와 해당 major에 맞는 상품코드(String),
+ * 10퍼센트 할인, 한달짜리인 쿠폰 생성.
  * 
  * @author Seongjun
  * @since 2015/5/16
- * @version 2015/5/17
+ * @version 2015/5/19
  */
 public class CreateCouponAuto {
 
+	/**
+	 * @param major
+	 * @return 자동으로 만든 쿠폰 객체
+	 * @throws SQLException
+	 *             SQL 에러 시 발생
+	 */
 	@SuppressWarnings("deprecation")
 	public static Coupon doAction(String major) throws SQLException {
 
@@ -27,7 +35,7 @@ public class CreateCouponAuto {
 		int num = 0;
 
 		// 쿼리를 통해 쿠폰코드가 "coupon*"인 것들을 찾음
-		String query = "select c_code from coupon where c_code like 'coupon%";
+		String query = "select c_code from coupon where c_code like 'coupon%'";
 		PreparedStatement pstmt = DbConnector.getInstance().getConnection()
 				.prepareStatement(query);
 		ResultSet resultSet = pstmt.executeQuery();
@@ -57,7 +65,7 @@ public class CreateCouponAuto {
 			existingICodes.add(resultSet.getString("i_code"));
 		}
 
-		// 상품코드중 랜덤으로 배정 (0 ~ n-1)
+		// 상품코드중 랜덤으로 배정. (인덱스 0 ~ n-1중 한개)
 		String newICode = existingICodes.get(new Random()
 				.nextInt(existingICodes.size() - 1));
 
