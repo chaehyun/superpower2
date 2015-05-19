@@ -15,7 +15,7 @@ import Elements.Purchase;
 
 public class UpdateFavorite {
 
-	public static String givecoupon(String userid) throws SQLException {
+	public static String getFavorite(String userid) throws SQLException {
 
 		String major;
 		int purchase_count;

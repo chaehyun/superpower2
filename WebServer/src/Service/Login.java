@@ -83,7 +83,7 @@ public class Login{
 			DbConnector.getInstance().getConnection().commit();
 			DbConnector.getInstance().getConnection().setAutoCommit(true);
 			
-			UpdateFavorite.givecoupon(userid);
+			UpdateFavorite.getFavorite(userid);
 			
 		}catch(Exception e){
 			System.err.println("sql error = " + e.getMessage());
