@@ -18,7 +18,8 @@ public class UpdateFavorite {
 	public static String givecoupon(String userid) throws SQLException {
 
 		String major;
-
+		int purchase_count;
+		
 		List<PersonalFavorite> personalfavorite = new ArrayList<PersonalFavorite>();
 		List<Purchase> personalpurchaselist = new ArrayList<Purchase>();
 		personalpurchaselist = GetPersonalItem.doAction(userid);
@@ -31,7 +32,8 @@ public class UpdateFavorite {
 			// major °ª ¹Þ¾Æ¿È
 			major = Getmajorid
 					.getmajor(personalpurchaselist.get(i).getI_code());
-			
+			// ±¸¸Å È½¼ö ¹Þ¾Æ¿È
+			purchase_count = personalpurchaselist.get(i).getCount();
 			System.out.println(major);
 
 			// major id·Î count Áõ°¡½ÃÅ´
@@ -40,7 +42,7 @@ public class UpdateFavorite {
 				if (personalfavorite.get(j).getMajor().equals(major)) {
 
 					int count = personalfavorite.get(j).getCount();
-					personalfavorite.get(j).setCount(count + 1);
+					personalfavorite.get(j).setCount(count + (1*purchase_count));
 					System.out.println(personalfavorite.get(j).getMajor()
 							+ personalfavorite.get(j).getCount());
 
@@ -55,14 +57,14 @@ public class UpdateFavorite {
 		DbConnector.getInstance().getConnection().setAutoCommit(false);
 
 		// Äõ¸® ½ÇÇà
-		String sql = "update member set major = ? where id = ?";
+		String sql = "update member set favorite = ? where id = ?";
 		PreparedStatement pstmt = DbConnector.getInstance().getConnection()
 				.prepareStatement(sql);
 
 		pstmt.setString(1, major);
 		pstmt.setString(2, userid);
 
-		pstmt.executeQuery();
+		pstmt.executeUpdate();
 
 		DbConnector.getInstance().getConnection().commit();
 		DbConnector.getInstance().getConnection().setAutoCommit(true);
