@@ -13,7 +13,9 @@ import java.util.List;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import Database.GetLocationFromBeacon;
 import Service.BestItem;
+import Service.GivePersonalCoupon;
 import Service.Login;
 import Service.ShowCoupons;
 import Service.UpdateFavorite;
@@ -88,6 +90,17 @@ public class ClientThread extends Thread {
 					break;
 				case "req_coupon_list":
 					sendCouponList(recvMsg);
+					break;
+				case "connect_beacon":
+					String mac_addr = recvMsg.getString("mac_addr");
+					// 입장 쿠폰
+					if((GetLocationFromBeacon.doAction(mac_addr)).equals("enter")){
+						GivePersonalCoupon.givepersonalcoupon(recvMsg.getString("ID"));
+					}
+					// 진열대쿠폰
+					else{
+						
+					}
 					break;
 				case "req_coupon_use":
 					break;
