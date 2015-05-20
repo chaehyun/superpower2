@@ -20,7 +20,7 @@ import Database.ResetLogFlag;
  * 
  * @author Minji, Seongjun
  * @since 2015/5/1
- * @version 2015/5/4
+ * @version 2015/5/20
  */
 public class MainFrame extends JFrame {
 
@@ -31,6 +31,7 @@ public class MainFrame extends JFrame {
 	private ItemPanel itemPanel; // 상품 패널
 	private OwnershipPanel ownershipPanel; // 소유 패널
 	private PurchasePanel purchasePanel; // 구매 패널
+	private BeaconPanel beaconPanel;	// 비콘 패널
 
 	private ServerThread serverThread; // 서버 클래스
 
@@ -102,6 +103,10 @@ public class MainFrame extends JFrame {
 		// 구매 패널 설정
 		purchasePanel = new PurchasePanel();
 		tabbedPane.addTab("구매", purchasePanel);
+
+		// 비콘 패널 설정
+		beaconPanel = new BeaconPanel();
+		tabbedPane.addTab("비콘", beaconPanel);
 
 		// 서버 시작
 		this.serverThread = new ServerThread();
