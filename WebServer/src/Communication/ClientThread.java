@@ -14,6 +14,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import Database.GetLocationFromBeacon;
+import Database.RegisterMember;
 import Service.BestItem;
 import Service.GiveMajorCoupon;
 import Service.GivePersonalCoupon;
@@ -96,6 +97,9 @@ public class ClientThread extends Thread {
 					break;
 				case "req_coupon_use":
 					sendUseCoupon(recvMsg);
+					break;
+				case "register":
+					RegisterMember.doAction(recvMsg);
 					break;
 				}
 			}
