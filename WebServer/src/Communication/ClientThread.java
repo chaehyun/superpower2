@@ -15,10 +15,10 @@ import org.json.JSONObject;
 
 import Database.GetLocationFromBeacon;
 import Service.BestItem;
+import Service.GiveMajorCoupon;
 import Service.GivePersonalCoupon;
 import Service.Login;
 import Service.ShowCoupons;
-import Service.UpdateFavorite;
 import Service.UseCoupon;
 
 /**
@@ -92,17 +92,10 @@ public class ClientThread extends Thread {
 					sendCouponList(recvMsg);
 					break;
 				case "connect_beacon":
-					String mac_addr = recvMsg.getString("mac_addr");
-					// 입장 쿠폰
-					if((GetLocationFromBeacon.doAction(mac_addr)).equals("enter")){
-						GivePersonalCoupon.givepersonalcoupon(recvMsg.getString("ID"));
-					}
-					// 진열대쿠폰
-					else{
-						
-					}
+					sendGiveCoupon(recvMsg);
 					break;
 				case "req_coupon_use":
+					sendUseCoupon(recvMsg);
 					break;
 				}
 			}
@@ -154,9 +147,10 @@ public class ClientThread extends Thread {
 	 * 
 	 * @param recvMsg
 	 * @throws JSONException
-	 * @throws SQLException 
+	 * @throws SQLException
 	 */
-	public void sendlogin(JSONObject recvMsg) throws JSONException, SQLException {
+	public void sendlogin(JSONObject recvMsg) throws JSONException,
+			SQLException {
 
 		JSONObject sendMsg = new JSONObject();
 
@@ -229,6 +223,34 @@ public class ClientThread extends Thread {
 		// 사용 결과 JSON을 클라이언트로 보냄
 		this.printWriter.println(UseCoupon.use(this.id,
 				recvMsg.getString("Code")));
+		this.printWriter.flush();
+	}
+
+	/**
+	 * @param recvMsg
+	 * @return
+	 * @throws JSONException
+	 * @throws SQLException
+	 */
+	public void sendGiveCoupon(JSONObject recvMsg) throws JSONException,
+			SQLException {
+
+		JSONObject response = null;
+
+		String mac_addr = recvMsg.getString("mac_addr");
+		// 입장 쿠폰
+		if ((GetLocationFromBeacon.doAction(mac_addr)).equals("entrance")) {
+			response = GivePersonalCoupon.givepersonalcoupon(recvMsg
+					.getString("ID"));
+		}
+		// 진열대쿠폰
+		else {
+			response = GiveMajorCoupon.doAction(recvMsg.getString("ID"),
+					mac_addr);
+		}
+
+		// 결과 JSON을 클라이언트로 보냄
+		this.printWriter.println(response);
 		this.printWriter.flush();
 	}
 }

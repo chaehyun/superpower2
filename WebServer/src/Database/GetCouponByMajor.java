@@ -12,10 +12,10 @@ public class GetCouponByMajor {
 
 	public static List<Coupon> doAction(String major) throws SQLException {
 
-		// 孽府 角青 
+		// 孽府 角青
 		String query = "select coupon.* from coupon, item  where "
 				+ "item.major=? and item.i_code=coupon.i_code";
-		
+
 		PreparedStatement pstmt = DbConnector.getInstance().getConnection()
 				.prepareStatement(query);
 		pstmt.setString(1, major);
@@ -34,6 +34,7 @@ public class GetCouponByMajor {
 
 			couponList.add(coupon);
 		}
+		System.out.println("success - GetCouponByMajor.doAction()");
 
 		return couponList;
 	}
