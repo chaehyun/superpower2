@@ -80,13 +80,12 @@ public class ClientThread extends Thread {
 					break;
 				}
 				JSONObject recvMsg = new JSONObject(line);
-
+				System.out.println(recvMsg.getString("MessageType"));
 				switch (recvMsg.getString("MessageType")) {
 				case "req_login":
 					sendlogin(recvMsg);
 					break;
 				case "req_best_list":
-					System.out.println("getrequest for best item");
 					sendbestitem();
 					break;
 				case "req_coupon_list":
@@ -242,6 +241,8 @@ public class ClientThread extends Thread {
 		JSONObject response = null;
 
 		String mac_addr = recvMsg.getString("mac_addr");
+		
+		System.out.println("receive mac_addr");
 		// ¿‘¿Â ƒÌ∆˘
 		if ((GetLocationFromBeacon.doAction(mac_addr)).equals("entrance")) {
 			response = GivePersonalCoupon.givepersonalcoupon(recvMsg

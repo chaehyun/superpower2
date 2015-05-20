@@ -22,6 +22,8 @@ public class GivePersonalCoupon {
 		// 관심사 major받아옴
 		String major = UpdateFavorite.getFavorite(userid);
 		
+		System.out.println("givePersonalCoupon");
+		
 		// i_code로 부터 알아내야 할 것
 		String minor;
 		int price;

@@ -34,7 +34,6 @@ public class UpdateFavorite {
 					.getmajor(personalpurchaselist.get(i).getI_code());
 			// ±¸¸Å È½¼ö ¹Þ¾Æ¿È
 			purchase_count = personalpurchaselist.get(i).getCount();
-			System.out.println(major);
 
 			// major id·Î count Áõ°¡½ÃÅ´
 			for (int j = 0; j < 6; j++) {
@@ -43,8 +42,6 @@ public class UpdateFavorite {
 
 					int count = personalfavorite.get(j).getCount();
 					personalfavorite.get(j).setCount(count + (1*purchase_count));
-					System.out.println(personalfavorite.get(j).getMajor()
-							+ personalfavorite.get(j).getCount());
 
 				}
 			}
