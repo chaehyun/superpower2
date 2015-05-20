@@ -65,6 +65,7 @@ public class ClientThread extends Thread {
 
 		try {
 
+			
 			// 입출력 스트림 설정
 			this.bufferedReader = new BufferedReader(new InputStreamReader(
 					new DataInputStream(this.clientSocket.getInputStream())));
