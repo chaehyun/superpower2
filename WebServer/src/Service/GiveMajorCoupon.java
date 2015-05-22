@@ -95,6 +95,7 @@ public class GiveMajorCoupon {
 		// 2) i_code를 가지고 상품테이블에서 price get
 		price = Getprice.getprice(newcoupon.geti_code());
 
+		
 		response.put("MessageType", "major_coupon");
 		response.put("Code", newcoupon.getc_code());
 		response.put("ItemName", minor);
