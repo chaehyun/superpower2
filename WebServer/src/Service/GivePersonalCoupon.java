@@ -1,10 +1,14 @@
 package Service;
 
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+
 import org.json.JSONException;
 import org.json.JSONObject;
+
 import Database.CreateCouponAuto;
 import Database.GetCouponByMajor;
 import Database.GetPersonalCoupon;
@@ -53,8 +57,14 @@ public class GivePersonalCoupon {
 					response.put("ItemName", minor);
 					response.put("Price", price);
 					response.put("Discount", couponList.get(i).getdiscount());
-					response.put("StartDate", couponList.get(i).getbegin_date());
-					response.put("EndDate", couponList.get(i).getend_date());
+					
+					Date from = new Date();
+					SimpleDateFormat date = new SimpleDateFormat("yyyy-MM-dd");
+					String date_string = date.format(couponList.get(i).getbegin_date());
+					response.put("StartDate", date_string);
+					
+					date_string = date.format(couponList.get(i).getend_date());
+					response.put("EndDate", date_string);
 					
 					return response;
 					
