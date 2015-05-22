@@ -32,6 +32,7 @@ public class GivePersonalCoupon {
 
 		System.out.println("givePersonalCoupon");
 
+		
 		// i_code로 부터 알아내야 할 것
 		String minor;
 		int price;
