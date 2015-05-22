@@ -10,78 +10,105 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import Database.CreateCouponAuto;
+import Database.GetCoupon;
 import Database.GetCouponByMajor;
 import Database.GetPersonalCoupon;
+import Database.Getmajorid;
 import Database.Getminorid;
 import Database.Getprice;
+import Database.InsertOwnership;
 import Elements.Coupon;
 import Elements.Ownership;
 
 public class GivePersonalCoupon {
-	
-	public static JSONObject givepersonalcoupon(String userid) throws SQLException, JSONException{
-		
-		JSONObject response = null; 
-		
+
+	public static JSONObject givepersonalcoupon(String userid)
+			throws SQLException, JSONException {
+
+		JSONObject response = new JSONObject();
+
 		// 관심사 major받아옴
 		String major = UpdateFavorite.getFavorite(userid);
-		
+
 		System.out.println("givePersonalCoupon");
-		
+
 		// i_code로 부터 알아내야 할 것
 		String minor;
 		int price;
-		
+
 		// major에 해당하는 coupon
 		List<Coupon> couponList = new ArrayList<Coupon>();
 		couponList = GetCouponByMajor.doAction(major);
-		
+
 		// 내가 소유하고 있는 coupon
 		List<Ownership> mycouponList = new ArrayList<Ownership>();
 		mycouponList = GetPersonalCoupon.doAction(userid);
-		
-		for(int i=0; i<couponList.size(); i++){
-			for(int j=0; j<mycouponList.size(); j++){
-				if(couponList.get(i).getc_code().
-						equals(mycouponList.get(j).getC_code()) == false){
-					
+
+		for (int i = 0; i < couponList.size(); i++) {
+			for (int j = 0; j < mycouponList.size(); j++) {
+
+				String mycouponmajor = Getmajorid.getmajor(GetCoupon.doAction(
+						mycouponList.get(j).getC_code()).geti_code());
+
+				if (contain(couponList, mycouponList.get(j).getC_code()) == false
+						&& mycouponmajor.equals(major)) {
+
 					// 같지 않다면 coupon을 send
-					
+					System.out.println(">>>>>> " + major
+							+ " couponcouponcoupon!");
+					System.out.println(">>>>>> "
+							+ couponList.get(i).getc_code());
+					System.out.println(">>>>>> "
+							+ mycouponList.get(j).getC_code());
+
 					// 1) i_code를 가지고 상품테이블에서 상품이름get
 					minor = Getminorid.getminor(couponList.get(i).geti_code());
 					// 2) i_code를 가지고 상품테이블에서 price get
 					price = Getprice.getprice(couponList.get(i).geti_code());
-					
+
 					response.put("MessageType", "enter_coupon");
 					response.put("Code", couponList.get(i).getc_code());
 					response.put("ItemName", minor);
 					response.put("Price", price);
 					response.put("Discount", couponList.get(i).getdiscount());
-					
+					System.out.println(couponList.get(i).getdiscount());
+
 					Date from = new Date();
 					SimpleDateFormat date = new SimpleDateFormat("yyyy-MM-dd");
-					String date_string = date.format(couponList.get(i).getbegin_date());
+					String date_string = date.format(couponList.get(i)
+							.getbegin_date());
 					response.put("StartDate", date_string);
-					
+
 					date_string = date.format(couponList.get(i).getend_date());
 					response.put("EndDate", date_string);
-					
+
+					Ownership newownership = new Ownership();
+					newownership.setC_code(couponList.get(i).getc_code());
+					newownership.setId(userid);
+					newownership.setUsed("f");
+					InsertOwnership.doAction(newownership);
+
 					return response;
-					
+
 				}
 			}
 		}
-		
-		
+
 		// 새로운 쿠폰 탄생
 		Coupon newcoupon = new Coupon();
 		newcoupon = CreateCouponAuto.doAction(major);
 		
+		Ownership newownership = new Ownership();
+		newownership.setC_code(newcoupon.getc_code());
+		newownership.setId(userid);
+		newownership.setUsed("f");
+		InsertOwnership.doAction(newownership);
+
 		// 1) i_code를 가지고 상품테이블에서 상품이름get
 		minor = Getminorid.getminor(newcoupon.geti_code());
 		// 2) i_code를 가지고 상품테이블에서 price get
 		price = Getprice.getprice(newcoupon.geti_code());
-		
+
 		response.put("MessageType", "enter_coupon");
 		response.put("Code", newcoupon.getc_code());
 		response.put("ItemName", minor);
@@ -89,11 +116,21 @@ public class GivePersonalCoupon {
 		response.put("Discount", newcoupon.getdiscount());
 		response.put("StartDate", newcoupon.getbegin_date());
 		response.put("EndDate", newcoupon.getend_date());
+
+		
 		
 		return response;
-		
-		
-	}
-	
 
+	}
+
+	// 소유 여부
+	public static boolean contain(List<Coupon> couponlist, String c_code){
+		
+		for(int i=0; i<couponlist.size(); i++){
+			if(couponlist.get(i).getc_code().equals(c_code)){
+				return true;
+			}
+		}
+		return false;
+	}
 }

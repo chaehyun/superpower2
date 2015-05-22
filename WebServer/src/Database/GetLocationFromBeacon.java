@@ -12,7 +12,7 @@ public class GetLocationFromBeacon {
 		String location = null;
 
 		// Äõ¸® ½ÇÇà 
-		String query = "select location from Beacon where mac_addr=?";
+		String query = "select location from beacon where mac_addr=?";
 		
 		PreparedStatement pstmt = DbConnector.getInstance().getConnection()
 				.prepareStatement(query);
@@ -24,6 +24,7 @@ public class GetLocationFromBeacon {
 			location = rs.getString("location");
 		}
 
+		System.out.println(location);
 		return location;
 	}
 

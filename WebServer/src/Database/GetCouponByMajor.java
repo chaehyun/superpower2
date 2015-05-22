@@ -32,8 +32,11 @@ public class GetCouponByMajor {
 			coupon.setbegin_date(rs.getDate("begin_date"));
 			coupon.setend_date(rs.getDate("end_date"));
 
+			System.out.println(">" + coupon.getc_code());
+			
 			couponList.add(coupon);
 		}
+		
 		System.out.println("success - GetCouponByMajor.doAction()");
 
 		return couponList;

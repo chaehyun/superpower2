@@ -243,18 +243,20 @@ public class ClientThread extends Thread {
 
 		String mac_addr = recvMsg.getString("mac_addr");
 		
-		System.out.println("receive mac_addr");
+		System.out.println("receive mac_addr" + recvMsg.getString("mac_addr"));
 		// 입장 쿠폰
 		if ((GetLocationFromBeacon.doAction(mac_addr)).equals("entrance")) {
+			System.out.println(recvMsg.getString("ID") + "entrance쿠폰");
 			response = GivePersonalCoupon.givepersonalcoupon(recvMsg
 					.getString("ID"));
+			
 		}
 		// 진열대쿠폰
 		else {
 			response = GiveMajorCoupon.doAction(recvMsg.getString("ID"),
 					mac_addr);
 		}
-
+		System.out.println(response.getString("MessageType"));
 		// 결과 JSON을 클라이언트로 보냄
 		this.printWriter.println(response);
 		this.printWriter.flush();

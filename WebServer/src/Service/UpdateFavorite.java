@@ -20,6 +20,8 @@ public class UpdateFavorite {
 		String major;
 		int purchase_count;
 		
+		System.out.println("getFavorite");
+		
 		List<PersonalFavorite> personalfavorite = new ArrayList<PersonalFavorite>();
 		List<Purchase> personalpurchaselist = new ArrayList<Purchase>();
 		personalpurchaselist = GetPersonalItem.doAction(userid);

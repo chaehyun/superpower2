@@ -38,8 +38,7 @@ public class GiveMajorCoupon {
 	public static JSONObject doAction(String userId, String macAddr)
 			throws SQLException, JSONException {
 
-		JSONObject response = null;
-
+		JSONObject response = new JSONObject();
 		// 해당 비콘 MAC에 대한 위치를 DB에서 가져옴.
 		String major = GetLocationFromBeacon.doAction(macAddr);
 

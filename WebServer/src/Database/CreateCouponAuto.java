@@ -80,7 +80,7 @@ public class CreateCouponAuto {
 
 		// 쿠폰 만드는 쿼리 실행
 		InsertCoupon.doAction(newCoupon);
-
+		
 		return newCoupon;
 	}
 }
