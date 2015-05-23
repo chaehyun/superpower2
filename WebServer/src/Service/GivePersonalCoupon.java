@@ -29,9 +29,6 @@ public class GivePersonalCoupon {
 
 		// 관심사 major받아옴
 		String major = UpdateFavorite.getFavorite(userid);
-
-		System.out.println("givePersonalCoupon");
-
 		
 		// i_code로 부터 알아내야 할 것
 		String minor;
@@ -53,14 +50,6 @@ public class GivePersonalCoupon {
 
 				if (contain(couponList, mycouponList.get(j).getC_code()) == false
 						&& mycouponmajor.equals(major)) {
-
-					// 같지 않다면 coupon을 send
-					System.out.println(">>>>>> " + major
-							+ " couponcouponcoupon!");
-					System.out.println(">>>>>> "
-							+ couponList.get(i).getc_code());
-					System.out.println(">>>>>> "
-							+ mycouponList.get(j).getC_code());
 
 					// 1) i_code를 가지고 상품테이블에서 상품이름get
 					minor = Getminorid.getminor(couponList.get(i).geti_code());
